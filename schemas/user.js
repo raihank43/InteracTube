@@ -23,10 +23,9 @@ const typeDefs = `#graphql
 
   # Mutation -> pendaftaran route / endpoint yang selain GET / CUD
   type Mutation {
-    addUser(newUser: RegisterUser!): User
+    register(newUser: RegisterUser!): User
   }
 
 `;
 
-
-module.exports = typeDefs
+module.exports = typeDefs;

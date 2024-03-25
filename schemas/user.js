@@ -17,7 +17,7 @@ const typeDefs = `#graphql
   # Query ->  untuk bikin R
   type Query {
     findAllUsers: [User]
-    findUserById(id: ID!): User
+    findUserById(_id: ID!): User
 
   }
 

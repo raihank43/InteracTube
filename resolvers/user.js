@@ -26,8 +26,11 @@ const resolvers = {
     },
 
     findUserById: async (_, args) => {
-      const users = await User.findAll();
-      return users.find((user) => user.id == args.id);
+    //   console.log(args); // id nya didapat dari args
+      const user = await User.findById(args._id);
+
+      return user
+      //   return users.find((user) => user.id == args.id);
     },
   },
 

@@ -39,6 +39,43 @@ class Post {
     const createdPost = await this.findById(result.insertedId);
     return createdPost;
   }
+
+  static async addComment(data) {
+    const postCollection = this.collection();
+    const result = await postCollection.updateOne(
+      {
+        _id: new ObjectId("6601b84052b9d74f08696f3d"),
+      },
+      {
+        $push: {
+          comments: { ...data, createdAt: new Date(), updatedAt: new Date() },
+        },
+      }
+    );
+
+    const updatedPostWithComment = await this.findById(
+      "6601b84052b9d74f08696f3d"
+    );
+
+    return updatedPostWithComment;
+  }
+
+  static async likePost(data) {
+    const postCollection = this.collection();
+
+    const result = await postCollection.updateOne(
+      {
+        _id: new ObjectId("6601b84052b9d74f08696f3d"),
+      },
+      {
+        $push: {
+          likes: { ...data, createdAt: new Date(), updatedAt: new Date() },
+        },
+      }
+    );
+
+    console.log(result);
+  }
 }
 
 module.exports = Post;

@@ -15,6 +15,22 @@ const resolvers = {
 
       return result;
     },
+
+    likePost: async (_, args) => {
+      console.log(args);
+
+      const newLike = args.newLike;
+
+      const result = await Post.likePost(newLike);
+    },
+
+    addComment: async (_, args) => {
+      // console.log(args)
+      const newComment = args.newComment;
+      const result = await Post.addComment(newComment);
+
+      return result;
+    },
   },
 };
 

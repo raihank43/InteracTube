@@ -26,15 +26,25 @@ input NewPost {
     imgUrl: String
 }
 
+input NewLike {
+    username: String!
+}
+
+input NewComment {
+    content: String!
+    username: String!
+}
+
 type Query {
     findAllPost: [Post]
     findPostsById(id: ID!): Post
 }
 
 type Mutation {
-    createPost(newPost: NewPost): Post #NewPost -> nama argument, NewPost setelahnya, nama inputnya
+    createPost(newPost: NewPost): Post #NewPost -> nama argument, NewPost setelahnya, nama inputnya, untuk Post terakhir adalah yang ingin kita return
+    likePost(newLike:NewLike): Like
+    addComment(newComment: NewComment): Post
 }
 `;
 
-
-module.exports = typeDefs
+module.exports = typeDefs;

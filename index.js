@@ -18,6 +18,15 @@ let users = [
   },
 ];
 
+let posts = [
+  {
+    id: 1,
+    content: "lorem ipsum",
+    tags: "food",
+    imgUrl: "content.png",
+  },
+];
+
 const typeDefs = `#graphql
   type User {
       id: ID
@@ -26,8 +35,24 @@ const typeDefs = `#graphql
       email: String
       password: String
   }
+
+  input RegisterUser {
+    name: String!
+    username: String! 
+    email: String! 
+    password: String!
+  }
+
+  # Query ->  untuk bikin R
   type Query {
     findAllUsers: [User]
+    findUserById(id: ID!): User
+
+  }
+
+  # Mutation -> pendaftaran route / endpoint yang selain GET / CUD
+  type Mutation {
+    addUser(newUser: RegisterUser!): User
   }
 
 `;
@@ -37,6 +62,27 @@ const resolvers = {
     findAllUsers: () => {
       // implementasi bagaimana cara mendapatkan datanya
       return users;
+    },
+
+    findUserById: (_, args) => {
+      return users.find((user) => user.id == args.id);
+    },
+  },
+
+  Mutation: {
+    addUser: (_, args) => {
+      console.log(args);
+      const { name, username, email, password } = args.newUser;
+      const newUser = {
+        id: users.length + 1,
+        name,
+        username,
+        email,
+        password,
+      };
+
+      users.push(newUser);
+      return newUser;
     },
   },
 };

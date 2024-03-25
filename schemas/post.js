@@ -28,6 +28,7 @@ input NewPost {
 
 type Query {
     findAllPost: [Post]
+    findPostsById(id: ID!): Post
 }
 
 type Mutation {

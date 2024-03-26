@@ -1,5 +1,6 @@
 const { ObjectId } = require("mongodb");
 const database = require("../config/db");
+const redis = require("../config/redis");
 class Post {
   static collection() {
     return database.collection("posts");

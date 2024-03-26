@@ -1,12 +1,30 @@
+const redis = require("../config/redis");
 const Post = require("../models/posts");
 const User = require("../models/user");
-
 const resolvers = {
   Query: {
     findAllPost: async (_, args, contextValue) => {
       const decodedToken = await contextValue.authentication(); // untuk memanggil authentication di context
+      // caching
+      // 1. jika ada data dari cache
+      // -> kembalikan data dari cachenya
+
+      const cache = await redis.get("posts");
+      if (cache) {
+        console.log(cache, "lewat cache");
+        return JSON.parse(cache);
+      }
+
+      // 2. jika tidak ada data dari cache
+      // -> hit ke mongoDB lewat model yang sudah dibuat
+      // -> simpan hasil mongodbnya ke cache
 
       const result = await Post.findAll();
+
+      console.log(result, "lewat mongodb");
+
+      await redis.set("posts", JSON.stringify(result));
+
       return result;
     },
 
@@ -24,12 +42,16 @@ const resolvers = {
       // menggunakan context dan authentication kita bisa mengirim authorId yang membuat post
       const decodedToken = await contextValue.authentication(); // untuk memanggil authentication di context
 
+      // invalidate cache
+      // jika berhasil melakukan create data/ delete data/update data ->
       const newPost = args.newPost;
       const result = await Post.insert({
         ...newPost,
         authorId: decodedToken._id,
       });
 
+      // hapus cachenya
+      await redis.del("posts");
       return result;
     },
 
@@ -37,11 +59,12 @@ const resolvers = {
       const decodedToken = await contextValue.authentication();
 
       const likerUsername = decodedToken.username;
-      
+
       const newLike = args.newLike;
       newLike.username = commenterUsername;
       const result = await Post.likePost(newLike);
 
+      await redis.del("posts");
       return result;
     },
 
@@ -55,7 +78,8 @@ const resolvers = {
       const newComment = args.newComment;
       newComment.username = commenterUsername;
       const result = await Post.addComment(newComment);
-
+      
+      await redis.del("posts");
       return result;
     },
   },

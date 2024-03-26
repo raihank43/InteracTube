@@ -28,6 +28,11 @@ class Post {
             "author.password": 0,
           },
         },
+        {
+          $sort: {
+            createdAt: -1,
+          },
+        },
       ])
       .toArray();
 

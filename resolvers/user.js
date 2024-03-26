@@ -1,4 +1,7 @@
+const { GraphQLError } = require("graphql");
 const User = require("../models/user");
+const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 // let users = [
 //   {
@@ -26,10 +29,10 @@ const resolvers = {
     },
 
     findUserById: async (_, args) => {
-    //   console.log(args); // id nya didapat dari args
+      //   console.log(args); // id nya didapat dari args
       const user = await User.findById(args._id);
 
-      return user
+      return user;
       //   return users.find((user) => user.id == args.id);
     },
   },
@@ -39,6 +42,40 @@ const resolvers = {
       const newUser = args.newUser;
       const result = await User.createUser(newUser);
       return result;
+    },
+
+    login: async (_, args) => {
+      const { email, password } = args;
+      const user = await User.findByEmail(email);
+      if (!user) {
+        throw new GraphQLError("Invalid email/password", {
+          extensions: {
+            code: "UNAUTHORIZED",
+          },
+        });
+      }
+
+      const isPasswordValid = bcryptjs.compareSync(password, user.password);
+      if (!isPasswordValid) {
+        throw new GraphQLError("Invalid email/password", {
+          extensions: {
+            code: "UNAUTHORIZED",
+          },
+        });
+      }
+
+      const access_token = jwt.sign(
+        {
+          _id: user._id,
+          email: user.email,
+        },
+        "rahasia"
+      );
+
+      return {
+        access_token,
+        email,
+      };
     },
   },
 };

@@ -14,6 +14,12 @@ const typeDefs = `#graphql
     password: String!
   }
 
+
+  type LoginOutput{
+    access_token: String
+    email: String
+  }
+
   # Query ->  untuk bikin R
   type Query {
     findAllUsers: [User]
@@ -24,6 +30,7 @@ const typeDefs = `#graphql
   # Mutation -> pendaftaran route / endpoint yang selain GET / CUD
   type Mutation {
     register(newUser: RegisterUser!): User
+    login(email: String!, password: String!): LoginOutput
   }
 
 `;

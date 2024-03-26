@@ -33,7 +33,7 @@ input NewPost {
 }
 
 input NewLike {
-    username: String!
+    postId: String!
 }
 
 input NewComment {

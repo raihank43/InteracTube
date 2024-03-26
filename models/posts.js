@@ -84,7 +84,7 @@ class Post {
 
     const result = await postCollection.updateOne(
       {
-        _id: new ObjectId("6601b84052b9d74f08696f3d"),
+        _id: new ObjectId(data.postId),
       },
       {
         $push: {
@@ -93,7 +93,7 @@ class Post {
       }
     );
 
-    const updatedPostWithLike = await this.findById("6601b84052b9d74f08696f3d");
+    const updatedPostWithLike = await this.findById(data.postId);
 
     return updatedPostWithLike;
   }

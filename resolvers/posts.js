@@ -34,9 +34,12 @@ const resolvers = {
     },
 
     likePost: async (_, args) => {
-      await contextValue.authentication();
-      const newLike = args.newLike;
+      const decodedToken = await contextValue.authentication();
 
+      const likerUsername = decodedToken.username;
+      
+      const newLike = args.newLike;
+      newLike.username = commenterUsername;
       const result = await Post.likePost(newLike);
 
       return result;
@@ -47,10 +50,10 @@ const resolvers = {
 
       const decodedToken = await contextValue.authentication();
 
-      const commenterUsername = decodedToken.username
+      const commenterUsername = decodedToken.username;
 
       const newComment = args.newComment;
-      newComment.username = commenterUsername
+      newComment.username = commenterUsername;
       const result = await Post.addComment(newComment);
 
       return result;

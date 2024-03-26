@@ -4,7 +4,7 @@ const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { GraphQLError } = require("graphql");
 const jwt = require("jsonwebtoken");
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const userTypeDefs = require("./schemas/user");
 const postTypeDefs = require("./schemas/post");
@@ -30,7 +30,16 @@ const { url } = startStandaloneServer(server, {
       authentication: () => {
         // cek dari req.headers, ada gak headers Authorization
         // -> melakukan decode token, dan memastikan tokennya valid
+        
         // console.log(req.headers.authorization);
+        if (!req.headers.authorization) {
+          throw new GraphQLError("access token must be provided.", {
+            extensions: {
+              code: "UNAUTHORIZED",
+            },
+          });
+        }
+
         // split
         const accessToken = req.headers.authorization.split(" ")[1];
         if (!accessToken) {

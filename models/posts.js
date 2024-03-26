@@ -7,7 +7,28 @@ class Post {
 
   static async findAll() {
     const postCollection = this.collection();
-    const data = await postCollection.find({}).toArray();
+    const data = await postCollection
+      .aggregate([
+        {
+          $lookup: {
+            from: "users",
+            localField: "authorId",
+            foreignField: "_id",
+            as: "author",
+          },
+        },
+        {
+          $unwind: {
+            path: "$author",
+          },
+        },
+        {
+          $project: {
+            "author.password": 0,
+          },
+        },
+      ])
+      .toArray();
 
     return data;
   }
@@ -74,11 +95,9 @@ class Post {
       }
     );
 
-    const updatedPostWithLike = await this.findById(
-      "6601b84052b9d74f08696f3d"
-    );
+    const updatedPostWithLike = await this.findById("6601b84052b9d74f08696f3d");
 
-    return updatedPostWithLike
+    return updatedPostWithLike;
   }
 }
 

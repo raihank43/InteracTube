@@ -7,6 +7,14 @@ type Post {
     authorId: String
     comments: [Comment]
     likes: [Like]
+    author: Author
+}
+
+type Author {
+    _id: ID
+    name: String
+    username: String
+    email: String
 }
 
 type Comment {

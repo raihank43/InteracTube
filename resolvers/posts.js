@@ -31,6 +31,8 @@ const resolvers = {
       const newLike = args.newLike;
 
       const result = await Post.likePost(newLike);
+
+      return result;
     },
 
     addComment: async (_, args, contextValue) => {
@@ -39,10 +41,7 @@ const resolvers = {
       const decodedToken = await contextValue.authentication();
 
       const newComment = args.newComment;
-      const result = await Post.addComment({
-        ...newComment,
-        _id: decodedToken._id,
-      });
+      const result = await Post.addComment(newComment);
 
       return result;
     },

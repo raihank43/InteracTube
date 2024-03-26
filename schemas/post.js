@@ -12,12 +12,10 @@ type Post {
 type Comment {
     content: String
     username: String
-    authorId: String
 }
 
 type Like {
     username: String
-    authorId: String
 }
 
 input NewPost {
@@ -42,7 +40,7 @@ type Query {
 
 type Mutation {
     createPost(newPost: NewPost): Post #NewPost -> nama argument, NewPost setelahnya, nama inputnya, untuk Post terakhir adalah yang ingin kita return
-    likePost(newLike:NewLike): Like
+    likePost(newLike:NewLike): Post
     addComment(newComment: NewComment): Post
 }
 `;

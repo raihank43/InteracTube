@@ -74,7 +74,11 @@ class Post {
       }
     );
 
-    console.log(result);
+    const updatedPostWithLike = await this.findById(
+      "6601b84052b9d74f08696f3d"
+    );
+
+    return updatedPostWithLike
   }
 }
 

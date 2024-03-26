@@ -24,6 +24,14 @@ class User {
     return data;
   }
 
+  static async findByUsername(username) {
+    const userCollection = this.collection();
+    const result = await userCollection.findOne({
+      username
+    })
+    return result
+  }
+
   static async createUser(newUser) {
     const userCollection = this.collection();
     /**

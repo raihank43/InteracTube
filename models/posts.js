@@ -30,7 +30,7 @@ class Post {
       ...data,
       likes: [],
       comments: [],
-      authorId: new ObjectId("6601aa66af6d766c5a4dbcfe"),
+      authorId: new ObjectId(data.authorId), // sesuai dengan orang yang lagi login
       createdAt: new Date(),
       updatedAt: new Date(),
     });

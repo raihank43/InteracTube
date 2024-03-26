@@ -2,6 +2,7 @@ const { GraphQLError } = require("graphql");
 const User = require("../models/user");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 // let users = [
 //   {
@@ -34,6 +35,11 @@ const resolvers = {
 
       return user;
       //   return users.find((user) => user.id == args.id);
+    },
+
+    findUserByUsername: async (_, args) => {
+      const findUser = await User.findByUsername(args.username);
+      return findUser;
     },
   },
 
@@ -69,7 +75,7 @@ const resolvers = {
           _id: user._id,
           email: user.email,
         },
-        "rahasia"
+        JWT_SECRET_KEY
       );
 
       return {

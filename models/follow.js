@@ -27,6 +27,68 @@ class Follow {
     const createdFollower = await this.findById(result.insertedId);
     return createdFollower;
   }
+
+  static async findFollowing(_id) {
+    // follower
+    return this.collection()
+      .aggregate([
+        {
+          $match: {
+            followerId: new ObjectId(_id),
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "followingId",
+            foreignField: "_id",
+            as: "following",
+          },
+        },
+        {
+          $unwind: {
+            path: "$following",
+          },
+        },
+        {
+          $project: {
+            "following.password": 0,
+          },
+        },
+      ])
+      .toArray();
+  }
+
+  static async findFollower(_id) {
+    // follower
+    return this.collection()
+      .aggregate([
+        {
+          $match: {
+            followingId: new ObjectId(_id),
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "followerId",
+            foreignField: "_id",
+            as: "follower",
+          },
+        },
+        {
+          $unwind: {
+            path: "$follower",
+          },
+        },
+        {
+          $project: {
+            "follower.password": 0,
+          },
+        },
+      ])
+      .toArray();
+  }
 }
 
 module.exports = Follow;

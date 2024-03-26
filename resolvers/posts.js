@@ -1,4 +1,5 @@
 const Post = require("../models/posts");
+const User = require("../models/user");
 
 const resolvers = {
   Query: {
@@ -14,7 +15,7 @@ const resolvers = {
       const { _id } = args;
 
       const result = await Post.findById(_id);
-      return result
+      return result;
     },
   },
 
@@ -46,7 +47,10 @@ const resolvers = {
 
       const decodedToken = await contextValue.authentication();
 
+      const commenterUsername = decodedToken.username
+
       const newComment = args.newComment;
+      newComment.username = commenterUsername
       const result = await Post.addComment(newComment);
 
       return result;

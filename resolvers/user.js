@@ -74,6 +74,7 @@ const resolvers = {
         {
           _id: user._id,
           email: user.email,
+          username: user.username
         },
         JWT_SECRET_KEY
       );

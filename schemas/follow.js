@@ -3,15 +3,17 @@ type Follow {
     _id: ID
     followingId: ID
     followerId: ID
+    createdAt: String
+    updatedAt: String
 }
 
 input NewFollow {
     followingId: ID!
-    followerId: ID!
 }
 
+
 type Mutation {
-    followUser(newFollow: NewFollow): Follow
+    followUser(followingId: ID!): Follow
 }
 
 `;

@@ -65,7 +65,7 @@ class Post {
     const postCollection = this.collection();
     const result = await postCollection.updateOne(
       {
-        _id: new ObjectId("6601b84052b9d74f08696f3d"),
+        _id: new ObjectId(data.postId),
       },
       {
         $push: {
@@ -74,9 +74,7 @@ class Post {
       }
     );
 
-    const updatedPostWithComment = await this.findById(
-      "6601b84052b9d74f08696f3d"
-    );
+    const updatedPostWithComment = await this.findById(data.postId);
 
     return updatedPostWithComment;
   }

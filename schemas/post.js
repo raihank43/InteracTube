@@ -37,8 +37,8 @@ input NewLike {
 }
 
 input NewComment {
+    postId: String!
     content: String!
-    username: String!
 }
 
 type Query {

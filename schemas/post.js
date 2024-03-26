@@ -35,7 +35,7 @@ input NewComment {
 
 type Query {
     findAllPost: [Post]
-    findPostsById(id: ID!): Post
+    findPostById(_id: ID!): Post
 }
 
 type Mutation {

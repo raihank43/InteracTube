@@ -5,9 +5,16 @@ const resolvers = {
     findAllPost: async (_, args, contextValue) => {
       const decodedToken = await contextValue.authentication(); // untuk memanggil authentication di context
 
-      console.log(decodedToken);
       const result = await Post.findAll();
       return result;
+    },
+
+    findPostById: async (_, args, contextValue) => {
+      const decodedToken = await contextValue.authentication(); // untuk memanggil authentication di context
+      const { _id } = args;
+
+      const result = await Post.findById(_id);
+      return result
     },
   },
 
@@ -26,8 +33,6 @@ const resolvers = {
     },
 
     likePost: async (_, args) => {
-      console.log(args);
-
       const newLike = args.newLike;
 
       const result = await Post.likePost(newLike);

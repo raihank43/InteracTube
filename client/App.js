@@ -26,6 +26,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 function HomeScreen({ navigation }) {
   // console.log(navigation);
@@ -150,17 +151,47 @@ export default function App() {
         <Stack.Screen name="Store" component={StoreScreen} />
       </Stack.Navigator> */}
 
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            title: "Feed",
-            tabBarIcon: () => {
-              return <SimpleLineIcons name="feed" size={20} />;
+      <Tab.Navigator
+        screenOptions={({ route }) => {
+          return {
+            headerStyle: {
+              backgroundColor: "red"
+
             },
-          }}
-        />
+            headerTitleStyle: {
+              color: "black"
+            },
+            tabBarStyle: {
+              backgroundColor: "black"
+            },
+            tabBarIcon: (props) => {
+              if (route.name == "Home") {
+                return (
+                  <SimpleLineIcons
+                    name="feed"
+                    size={props.size}
+                    color={props.color}
+                  />
+                );
+              }
+
+              if (route.name == "Settings") {
+                return (
+                  <MaterialIcons
+                    name="settings-applications"
+                    size={props.size}
+                    color={props.color}
+                  />
+                );
+              }
+            },
+
+            tabBarActiveTintColor: "red",
+            tabBarInactiveTintColor: "white",
+          };
+        }}
+      >
+        <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
         {/* <Tab.Screen name="Store" component={StoreScreen} /> */}
       </Tab.Navigator>

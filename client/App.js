@@ -10,6 +10,7 @@ import {
   ScrollView,
   FlatList,
   Button,
+  Image,
 } from "react-native";
 import {
   SafeAreaView,
@@ -22,6 +23,9 @@ import Login from "./src/screens/Login";
 import Register from "./src/screens/Register";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 function HomeScreen({ navigation }) {
   // console.log(navigation);
@@ -34,7 +38,7 @@ function HomeScreen({ navigation }) {
         onPress={() => {
           navigation.navigate("Details", {
             id: 100,
-            type: "t-shirt"
+            type: "t-shirt",
           });
         }}
       />
@@ -50,7 +54,7 @@ function HomeScreen({ navigation }) {
 }
 
 function DetailsScreen({ route, navigation }) {
-  console.log(route.params)
+  console.log(route.params);
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Details Screen</Text>
@@ -85,7 +89,39 @@ function StoreScreen({ navigation }) {
         onPress={() => {
           navigation.push("Details", {
             id: 90,
-            type: "dress"
+            type: "dress",
+          });
+        }}
+      />
+
+      <Button
+        title="Go to Back"
+        onPress={() => {
+          navigation.goBack();
+        }}
+      />
+    </View>
+  );
+}
+
+function SettingsScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>Settings Screen</Text>
+
+      <Button
+        title="Go to Details"
+        onPress={() => {
+          navigation.navigate("Details");
+        }}
+      />
+
+      <Button
+        title="Go to Details Push"
+        onPress={() => {
+          navigation.push("Details", {
+            id: 90,
+            type: "dress",
           });
         }}
       />
@@ -101,17 +137,33 @@ function StoreScreen({ navigation }) {
 }
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     // Describe navigator type
     <NavigationContainer>
-      <Stack.Navigator>
-        {/* Describe the registered screen  */}
+      {/* <Stack.Navigator>
+        Describe the registered screen 
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="Store" component={StoreScreen} />
-      </Stack.Navigator>
+      </Stack.Navigator> */}
+
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            title: "Feed",
+            tabBarIcon: () => {
+              return <SimpleLineIcons name="feed" size={20} />;
+            },
+          }}
+        />
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+        {/* <Tab.Screen name="Store" component={StoreScreen} /> */}
+      </Tab.Navigator>
       {/* <Register /> */}
     </NavigationContainer>
   );

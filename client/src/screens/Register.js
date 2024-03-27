@@ -62,7 +62,7 @@ export default function Register() {
             Alert.alert("LOGIN SUCCESSS");
           }}
         >
-          <Text style={styles.loginText}>LOGIN</Text>
+          <Text style={styles.loginText}>REGISTER</Text>
         </TouchableOpacity>
 
         {/* <StatusBar style="auto" /> */}

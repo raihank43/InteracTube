@@ -17,7 +17,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-export default function Login() {
+export default function Login({ navigation }) {
   const [text, setText] = useState("");
   const DATA = [
     {
@@ -41,7 +41,9 @@ export default function Login() {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Welcome to HackTube</Text>
-        <Text style={{color: "white", fontWeight: "bold"}}>Silahkan Login.</Text>
+        <Text style={{ color: "white", fontWeight: "bold" }}>
+          Silahkan Login.
+        </Text>
         <Text style={styles.text}>{text}</Text>
         <View style={styles.form}>
           <TextInput
@@ -61,7 +63,7 @@ export default function Login() {
         <TouchableOpacity
           style={styles.login}
           onPress={() => {
-            Alert.alert("LOGIN SUCCESSS");
+            navigation.navigate("HomeTab");
           }}
         >
           <Text style={styles.loginText}>LOGIN</Text>

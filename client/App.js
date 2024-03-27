@@ -140,18 +140,71 @@ function SettingsScreen({ navigation }) {
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+function HomeTab() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => {
+        return {
+          headerStyle: {
+            backgroundColor: "red",
+          },
+          headerTitleStyle: {
+            color: "black",
+          },
+          tabBarStyle: {
+            backgroundColor: "black",
+          },
+          tabBarIcon: (props) => {
+            if (route.name == "Home") {
+              return (
+                <SimpleLineIcons
+                  name="feed"
+                  size={props.size}
+                  color={props.color}
+                />
+              );
+            }
+
+            if (route.name == "Settings") {
+              return (
+                <MaterialIcons
+                  name="settings-applications"
+                  size={props.size}
+                  color={props.color}
+                />
+              );
+            }
+          },
+
+          tabBarActiveTintColor: "red",
+          tabBarInactiveTintColor: "white",
+        };
+      }}
+    >
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
+      {/* <Tab.Screen name="Store" component={StoreScreen} /> */}
+    </Tab.Navigator>
+  );
+}
+
 export default function App() {
   return (
     // Describe navigator type
     <NavigationContainer>
-      {/* <Stack.Navigator>
-        Describe the registered screen 
-        <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Navigator>
+        {/* Describe the registered screen  */}
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="HomeTab"
+          component={HomeTab}
+        />
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="Store" component={StoreScreen} />
-      </Stack.Navigator> */}
+      </Stack.Navigator>
 
-      <Tab.Navigator
+      {/* <Tab.Navigator
         screenOptions={({ route }) => {
           return {
             headerStyle: {
@@ -194,7 +247,7 @@ export default function App() {
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
         {/* <Tab.Screen name="Store" component={StoreScreen} /> */}
-      </Tab.Navigator>
+      {/*</Tab.Navigator> */}
       {/* <Register /> */}
     </NavigationContainer>
   );

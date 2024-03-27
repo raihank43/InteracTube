@@ -22,26 +22,32 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.loginPage}> */}
-        <Text style={styles.text}>HackTube</Text>
-        <Text style={styles.text}>{text}</Text>
-        <View style={styles.form}>
-          <TextInput
-            style={styles.textInputForm}
-            value={text}
-            onChangeText={setText}
-          ></TextInput>
+      <Text style={styles.title}>Welcome to HackTube</Text>
+      <Text>Silahkan Login.</Text>
+      <Text style={styles.text}>{text}</Text>
+      <View style={styles.form}>
+        <TextInput
+          placeholder="Email"
+          style={styles.textInputForm}
+          value={text}
+          onChangeText={setText}
+        ></TextInput>
 
-        </View>
-        <TouchableOpacity
-          style={styles.login}
-          onPress={() => {
-            Alert.alert("LOGIN SUCCESSS");
-          }}
-        >
-          <Text style={styles.loginText}>LOGIN</Text>
-        </TouchableOpacity>
-      {/* </View> */}
+        <TextInput
+        placeholder="Password"
+          style={styles.textInputForm}
+          value={text}
+          onChangeText={setText}
+        ></TextInput>
+      </View>
+      <TouchableOpacity
+        style={styles.login}
+        onPress={() => {
+          Alert.alert("LOGIN SUCCESSS");
+        }}
+      >
+        <Text style={styles.loginText}>LOGIN</Text>
+      </TouchableOpacity>
 
       {/* <StatusBar style="auto" /> */}
     </View>
@@ -57,24 +63,27 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
 
-  loginPage: {
-    // backgroundColor: "white",
-    alignItems: "center",
-    padding: 100
-  },
+  // loginPage: {
+  //   // backgroundColor: "white",
+  //   flex: 1,
+  //   width: "100%"
+  // },
 
-  text: {
+  title: {
     fontWeight: "bold",
     fontSize: 50,
     color: "white",
+    textAlign: "center"
   },
 
   login: {
     backgroundColor: "red",
     padding: 10,
     borderRadius: 5,
-    width: 200,
+    width: 300,
+    height: 50,
     marginTop: 20,
+    justifyContent: "center"
   },
 
   loginText: {
@@ -84,12 +93,14 @@ const styles = StyleSheet.create({
   },
 
   form: {
-    backgroundColor: "white",
-
+    gap: 20,
   },
 
   textInputForm: {
-    width: 200,
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: "white",
+    width: 300,
     borderWidth: 1,
   },
 });

@@ -1,8 +1,6 @@
 import { View, StyleSheet, Text, Image } from "react-native";
 
 export default function PostItem({ Post }) {
-
-  Post.imgUrl ? console.log("available") : "not available"
   return (
     <View style={styles.PostItem}>
       <View style={styles.PostHeader}>

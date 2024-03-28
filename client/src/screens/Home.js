@@ -19,6 +19,7 @@ import { GET_POSTS } from "../queries/GetPostQuery";
 
 export default function HomeScreen({ navigation }) {
   const { loading, error, data } = useQuery(GET_POSTS);
+  console.log(error)
 
   // loading dan error harus di handle
   if (loading) {

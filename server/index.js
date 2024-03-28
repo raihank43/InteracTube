@@ -31,7 +31,6 @@ const { url } = startStandaloneServer(server, {
         // cek dari req.headers, ada gak headers Authorization
         // -> melakukan decode token, dan memastikan tokennya valid
         
-        // console.log(req.headers.authorization);
         if (!req.headers.authorization) {
           throw new GraphQLError("access token must be provided.", {
             extensions: {

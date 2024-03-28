@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -18,9 +18,28 @@ import {
   SafeAreaInsetsContext,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { AuthContext } from "../context/AuthContext";
+import { gql, useMutation } from "@apollo/client";
+import * as SecureStore from "expo-secure-store";
+
+const LOGIN_MUTATION = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      access_token
+      email
+    }
+  }
+`;
 
 export default function Login({ navigation }) {
   const [text, setText] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
+  // console.log(data, loading, error);
+
+  const { setIsSignedIn } = useContext(AuthContext);
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -28,26 +47,44 @@ export default function Login({ navigation }) {
         <Text style={{ color: "white", fontWeight: "bold" }}>
           Silahkan Login.
         </Text>
-        <Text style={styles.text}>{text}</Text>
+        {/* <Text style={styles.text}>{text}</Text> */}
         <View style={styles.form}>
           <TextInput
             placeholder="Email"
             style={styles.textInputForm}
-            value={text}
-            onChangeText={setText}
+            value={email}
+            onChangeText={setEmail}
           ></TextInput>
 
           <TextInput
             placeholder="Password"
+            secureTextEntry
             style={styles.textInputForm}
-            value={text}
-            onChangeText={setText}
+            value={password}
+            onChangeText={setPassword}
           ></TextInput>
         </View>
         <TouchableOpacity
           style={styles.login}
-          onPress={() => {
-            navigation.navigate("HomeTab");
+          onPress={async () => {
+            try {
+              const response = await login({
+                variables: {
+                  email,
+                  password,
+                },
+              });
+              await SecureStore.setItemAsync(
+                "accessToken",
+                response.data.login.access_token
+              );
+              // console.log(response);
+              setIsSignedIn(true);
+            } catch (error) {
+              console.log(error);
+            }
+
+            // navigation.navigate("HomeTab");
           }}
         >
           <Text style={styles.loginText}>LOGIN</Text>

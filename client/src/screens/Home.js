@@ -5,6 +5,7 @@ import {
   FlatList,
   ScrollView,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 import {
   SafeAreaView,
@@ -13,37 +14,72 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import PostItem from "../components/PostItem";
+import { useQuery, gql } from "@apollo/client";
+
+// querynya di copy dari apollo sandbox
+const GET_POSTS = gql`
+  query findAllPost {
+    findAllPost {
+      _id
+      content
+      tags
+      imgUrl
+      authorId
+      comments {
+        content
+        username
+      }
+      likes {
+        username
+      }
+      author {
+        _id
+        name
+        username
+        email
+      }
+    }
+  }
+`;
 
 export default function HomeScreen({ navigation }) {
-  const DATA = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      content: "What a good looking day today!",
-      imgUrl:
-        "https://cdn4.iconfinder.com/data/icons/ui-beast-4/32/Ui-12-1024.png",
-      likes: "3",
-      comments: "0",
-      author: "Jimmy",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      content: "I have just eaten a very good cake, feels good.",
-      imgUrl:
-        "https://cdn4.iconfinder.com/data/icons/ui-beast-4/32/Ui-12-1024.png",
-      likes: "3",
-      comments: "0",
-      author: "Bob",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      content: "My mom just bought me a new pc! hooraay!",
-      imgUrl:
-        "https://cdn4.iconfinder.com/data/icons/ui-beast-4/32/Ui-12-1024.png",
-      likes: "3",
-      comments: "0",
-      author: "Charlie",
-    },
-  ];
+  const { loading, error, data } = useQuery(GET_POSTS);
+
+  // loading dan error harus di handle
+  if (loading) {
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <ActivityIndicator size={"large"} />
+        </SafeAreaView>
+      </SafeAreaProvider>
+    );
+  }
+
+  if (error) {
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <Text style={{ fontWeight: "bold" }}>Something went wrong: </Text>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    );
+  }
+
+  console.log(data.findAllPost, "<<<<< arraynya");
+
   return (
     <View
       style={{
@@ -56,17 +92,9 @@ export default function HomeScreen({ navigation }) {
 
       {/* Posts */}
       <FlatList
-        data={DATA}
-        renderItem={({ item }) => (
-          <PostItem
-            content={item.content}
-            imgUrl={item.imgUrl}
-            likes={item.likes}
-            comments={item.comments}
-            author={item.author}
-          />
-        )}
-        keyExtractor={(item) => item.id}
+        data={data.findAllPost}
+        renderItem={({ item }) => <PostItem Post={item} />}
+        keyExtractor={(item) => item._id}
       />
 
       <Button
@@ -91,7 +119,6 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   PostContainer: {
-    backgroundColor: "gray",
     width: "100%",
   },
 });

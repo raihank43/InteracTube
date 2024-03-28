@@ -1,20 +1,20 @@
 import { View, StyleSheet, Text, Image } from "react-native";
 
-export default function PostItem({ content, imgUrl, likes, comments, author }) {
+export default function PostItem({ Post }) {
   return (
     <View style={styles.PostItem}>
       <View style={styles.PostHeader}>
-        <Text>{author}</Text>
+        <Text style={styles.PostHeader.AuthorName}>{Post.author.name}</Text>
       </View>
 
       <View style={styles.PostBody}>
-        <Image style={styles.PostBody.Image} src={imgUrl}></Image>
-        <Text style={styles.title}>{content}</Text>
+        <Image style={styles.PostBody.Image} src={Post.imgUrl}></Image>
+        <Text style={styles.title}>{Post.content}</Text>
       </View>
 
       <View style={styles.PostFooter}>
-        <Text>Likes: {likes}</Text>
-        <Text>Comments: {comments}</Text>
+        <Text>Likes: {Post.likes.length}</Text>
+        <Text>Comments: {Post.comments.length}</Text>
       </View>
     </View>
   );
@@ -33,6 +33,13 @@ const styles = StyleSheet.create({
     // marginHorizontal: 16,
   },
 
+  PostHeader: {
+    AuthorName: {
+      fontWeight: "bold",
+      fontSize: 24
+    },
+  },
+
   PostBody: {
     width: "100%",
     // borderWidth: 1,
@@ -41,8 +48,7 @@ const styles = StyleSheet.create({
       width: "100%",
       height: 200,
       alignItems: "center",
-
-    }
+    },
   },
 
   PostFooter: {

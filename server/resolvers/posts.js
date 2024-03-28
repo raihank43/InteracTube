@@ -4,7 +4,7 @@ const User = require("../models/user");
 const resolvers = {
   Query: {
     findAllPost: async (_, args, contextValue) => {
-      const decodedToken = await contextValue.authentication(); // untuk memanggil authentication di context
+      // const decodedToken = await contextValue.authentication(); // untuk memanggil authentication di context
       // caching
       // 1. jika ada data dari cache
       // -> kembalikan data dari cachenya
@@ -40,14 +40,15 @@ const resolvers = {
   Mutation: {
     createPost: async (_, args, contextValue) => {
       // menggunakan context dan authentication kita bisa mengirim authorId yang membuat post
-      const decodedToken = await contextValue.authentication(); // untuk memanggil authentication di context
+      // const decodedToken = await contextValue.authentication(); // untuk memanggil authentication di context
 
       // invalidate cache
       // jika berhasil melakukan create data/ delete data/update data ->
       const newPost = args.newPost;
       const result = await Post.insert({
         ...newPost,
-        authorId: decodedToken._id,
+        // authorId: decodedToken._id,
+        authorId: "66019641aaddd7ef336278d8",
       });
 
       // hapus cachenya
@@ -78,7 +79,7 @@ const resolvers = {
       const newComment = args.newComment;
       newComment.username = commenterUsername;
       const result = await Post.addComment(newComment);
-      
+
       await redis.del("posts");
       return result;
     },

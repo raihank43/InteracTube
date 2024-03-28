@@ -9,6 +9,8 @@ import {
   Alert,
   ScrollView,
   FlatList,
+  TouchableHighlight,
+  TouchableNativeFeedback,
 } from "react-native";
 import {
   SafeAreaView,
@@ -68,6 +70,17 @@ export default function Login({ navigation }) {
         >
           <Text style={styles.loginText}>LOGIN</Text>
         </TouchableOpacity>
+        <Text style={{ color: "white", marginTop: 20 }}>
+          Belum Punya Akun? Silahkan{" "}
+          <Text
+            style={{ color: "red", fontWeight: "bold", fontSize: 15 }}
+            onPress={() => {
+              navigation.navigate("Register");
+            }}
+          >
+            Register
+          </Text>
+        </Text>
 
         {/* <StatusBar style="auto" /> */}
       </SafeAreaView>

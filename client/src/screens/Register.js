@@ -17,7 +17,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-export default function Register() {
+export default function Register({ navigation }) {
   const [text, setText] = useState("");
   return (
     <SafeAreaProvider>
@@ -59,11 +59,22 @@ export default function Register() {
         <TouchableOpacity
           style={styles.login}
           onPress={() => {
-            Alert.alert("LOGIN SUCCESSS");
+            navigation.navigate("Login");
           }}
         >
           <Text style={styles.loginText}>REGISTER</Text>
         </TouchableOpacity>
+        <Text style={{ color: "white", marginTop: 20, fontSize: 15 }}>
+          Sudah Punya Akun? Silahkan{" "}
+          <Text
+            onPress={() => {
+              navigation.navigate("Login");
+            }}
+            style={{ color: "red", fontWeight: "bold" }}
+          >
+            Login
+          </Text>
+        </Text>
 
         {/* <StatusBar style="auto" /> */}
       </SafeAreaView>

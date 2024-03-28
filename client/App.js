@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,15 +12,12 @@ import {
   Button,
   Image,
 } from "react-native";
-import {
-  SafeAreaView,
-  SafeAreaProvider,
-  SafeAreaInsetsContext,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-import Item from "./src/components/Item";
+
+import Item from "./src/components/PostItem";
 import Login from "./src/screens/Login";
 import Register from "./src/screens/Register";
+import HomeScreen from "./src/screens/Home";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -28,31 +25,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
-function HomeScreen({ navigation }) {
-  // console.log(navigation);
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
 
-      <Button
-        title="Go to Details"
-        onPress={() => {
-          navigation.navigate("Details", {
-            id: 100,
-            type: "t-shirt",
-          });
-        }}
-      />
-
-      <Button
-        title="Go to Details Push"
-        onPress={() => {
-          navigation.push("Details");
-        }}
-      />
-    </View>
-  );
-}
 
 function DetailsScreen({ route, navigation }) {
   console.log(route.params);
@@ -140,19 +113,27 @@ function SettingsScreen({ navigation }) {
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function HomeTab() {
+function LogoutScreen({ navigation }) {
+  useEffect(() => {
+    navigation.navigate("Login");
+  }, []);
+
+  return null;
+}
+
+function HomeTab({ navigation }) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => {
         return {
           headerStyle: {
-            backgroundColor: "red",
+            backgroundColor: "#ff1b1cff",
           },
           headerTitleStyle: {
             color: "black",
           },
           tabBarStyle: {
-            backgroundColor: "black",
+            backgroundColor: "#262626ff",
           },
           tabBarIcon: (props) => {
             if (route.name == "Home") {
@@ -174,6 +155,16 @@ function HomeTab() {
                 />
               );
             }
+
+            if (route.name == "Logout") {
+              return (
+                <MaterialIcons
+                  name="logout"
+                  size={props.size}
+                  color={props.color}
+                />
+              );
+            }
           },
 
           tabBarActiveTintColor: "red",
@@ -183,6 +174,7 @@ function HomeTab() {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Logout" component={LogoutScreen} />
       {/* <Tab.Screen name="Store" component={StoreScreen} /> */}
     </Tab.Navigator>
   );
@@ -195,6 +187,8 @@ export default function App() {
       <Stack.Navigator>
         {/* Describe the registered screen  */}
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+
         <Stack.Screen
           options={{ headerShown: false }}
           name="HomeTab"

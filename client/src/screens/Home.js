@@ -15,32 +15,7 @@ import {
 } from "react-native-safe-area-context";
 import PostItem from "../components/PostItem";
 import { useQuery, gql } from "@apollo/client";
-
-// querynya di copy dari apollo sandbox
-const GET_POSTS = gql`
-  query findAllPost {
-    findAllPost {
-      _id
-      content
-      tags
-      imgUrl
-      authorId
-      comments {
-        content
-        username
-      }
-      likes {
-        username
-      }
-      author {
-        _id
-        name
-        username
-        email
-      }
-    }
-  }
-`;
+import { GET_POSTS } from "../queries/GetPostQuery";
 
 export default function HomeScreen({ navigation }) {
   const { loading, error, data } = useQuery(GET_POSTS);
@@ -77,8 +52,6 @@ export default function HomeScreen({ navigation }) {
       </SafeAreaProvider>
     );
   }
-
-  console.log(data.findAllPost, "<<<<< arraynya");
 
   return (
     <View

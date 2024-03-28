@@ -17,36 +17,59 @@ import {
   SafeAreaInsetsContext,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { gql, useMutation } from "@apollo/client";
+import { GET_POSTS } from "../queries/GetPostQuery";
+import { ADD_POST } from "../mutations/AddPostMutation";
 
 export default function CreatePostScreen({ navigation }) {
-  const [text, setText] = useState("");
+  const [content, setContent] = useState("");
+  const [imgUrl, setImgUrl] = useState("");
+
+  const [addPost, { data, loading, error }] = useMutation(ADD_POST, {
+    refetchQueries: [GET_POSTS],
+    onCompleted: () => {
+      // pindah halaman
+      navigation.navigate("Home")
+    }
+  });
+
+  // console.log(data, loading, error);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Create new Post</Text>
         <Text style={{ color: "white", fontWeight: "bold" }}>
-          Silahkan Login.
+          Share what you think
         </Text>
-        <Text style={styles.text}>{text}</Text>
+        <Text style={styles.text}>{}</Text>
         <View style={styles.form}>
           <TextInput
             placeholder="What's happening?"
             style={styles.textInputForm}
-            value={text}
-            onChangeText={setText}
+            value={content}
+            onChangeText={setContent}
           ></TextInput>
 
           <TextInput
             placeholder="Insert Image Url..."
             style={styles.textInputForm}
-            value={text}
-            onChangeText={setText}
+            value={imgUrl}
+            onChangeText={setImgUrl}
           ></TextInput>
         </View>
         <TouchableOpacity
           style={styles.Post}
           onPress={() => {
-            navigation.navigate("HomeTab");
+            addPost({
+              variables: {
+                newPost: {
+                  content: content,
+                  imgUrl: imgUrl,
+                  tags: [],
+                },
+              },
+            });
           }}
         >
           <Text style={styles.submitText}>SUBMIT</Text>
@@ -61,17 +84,10 @@ export default function CreatePostScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "black",
+    backgroundColor: "#262626ff",
   },
-
-  // loginPage: {
-  //   // backgroundColor: "white",
-  //   flex: 1,
-  //   width: "100%"
-  // },
 
   title: {
     fontWeight: "bold",

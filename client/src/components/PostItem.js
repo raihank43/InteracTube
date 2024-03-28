@@ -1,6 +1,8 @@
 import { View, StyleSheet, Text, Image } from "react-native";
 
 export default function PostItem({ Post }) {
+
+  Post.imgUrl ? console.log("available") : "not available"
   return (
     <View style={styles.PostItem}>
       <View style={styles.PostHeader}>
@@ -8,7 +10,12 @@ export default function PostItem({ Post }) {
       </View>
 
       <View style={styles.PostBody}>
-        <Image style={styles.PostBody.Image} src={Post.imgUrl}></Image>
+        {Post.imgUrl ? (
+          <Image style={styles.PostBody.Image} src={Post.imgUrl}></Image>
+        ) : (
+          ""
+        )}
+
         <Text style={styles.title}>{Post.content}</Text>
       </View>
 
@@ -36,7 +43,7 @@ const styles = StyleSheet.create({
   PostHeader: {
     AuthorName: {
       fontWeight: "bold",
-      fontSize: 24
+      fontSize: 24,
     },
   },
 

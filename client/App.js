@@ -17,15 +17,13 @@ import { ApolloProvider } from "@apollo/client";
 
 import Login from "./src/screens/Login";
 import Register from "./src/screens/Register";
-import HomeScreen from "./src/screens/Home";
-import CreatePostScreen from "./src/screens/CreatePost";
+
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { SimpleLineIcons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+import HomeTab from "./src/navigators/HomeTab";
+
 
 function DetailsScreen({ route, navigation }) {
   console.log(route.params);
@@ -111,90 +109,6 @@ function SettingsScreen({ navigation }) {
 }
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
-
-function LogoutScreen({ navigation }) {
-  useEffect(() => {
-    navigation.navigate("Login");
-  }, []);
-
-  return null;
-}
-
-function HomeTab({ navigation }) {
-  return (
-    <Tab.Navigator
-      screenOptions={({ route }) => {
-        return {
-          headerStyle: {
-            backgroundColor: "#ff1b1cff",
-          },
-          headerTitleStyle: {
-            color: "black",
-          },
-          tabBarStyle: {
-            backgroundColor: "#262626ff",
-          },
-          tabBarIcon: (props) => {
-            if (route.name == "Home") {
-              return (
-                <SimpleLineIcons
-                  name="feed"
-                  size={props.size}
-                  color={props.color}
-                />
-              );
-            }
-
-            if (route.name == "Settings") {
-              return (
-                <MaterialIcons
-                  name="settings-applications"
-                  size={props.size}
-                  color={props.color}
-                />
-              );
-            }
-
-            if (route.name == "Logout") {
-              return (
-                <MaterialIcons
-                  name="logout"
-                  size={props.size}
-                  color={props.color}
-                />
-              );
-            }
-
-            if (route.name == "CreatePost") {
-              return (
-                <MaterialIcons
-                  name="create"
-                  size={props.size}
-                  color={props.color}
-                />
-              );
-            }
-          },
-
-          tabBarActiveTintColor: "red",
-          tabBarInactiveTintColor: "white",
-        };
-      }}
-    >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen
-        name="CreatePost"
-        component={CreatePostScreen}
-        navigation={navigation}
-      />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
-      <Tab.Screen name="Logout" component={LogoutScreen} />
-      {/* <Tab.Screen name="Store" component={StoreScreen} /> */}
-    </Tab.Navigator>
-  );
-}
-
 export default function App() {
   return (
     // Describe navigator type

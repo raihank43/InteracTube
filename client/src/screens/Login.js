@@ -21,15 +21,7 @@ import {
 import { AuthContext } from "../context/AuthContext";
 import { gql, useMutation } from "@apollo/client";
 import * as SecureStore from "expo-secure-store";
-
-const LOGIN_MUTATION = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      access_token
-      email
-    }
-  }
-`;
+import { LOGIN_MUTATION } from "../mutations/LoginMutation";
 
 export default function Login({ navigation }) {
   const [text, setText] = useState("");

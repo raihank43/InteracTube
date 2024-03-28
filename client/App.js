@@ -17,6 +17,7 @@ import Item from "./src/components/PostItem";
 import Login from "./src/screens/Login";
 import Register from "./src/screens/Register";
 import HomeScreen from "./src/screens/Home";
+import CreatePostScreen from "./src/screens/CreatePost";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -24,8 +25,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-
-
 
 function DetailsScreen({ route, navigation }) {
   console.log(route.params);
@@ -165,6 +164,16 @@ function HomeTab({ navigation }) {
                 />
               );
             }
+
+            if (route.name == "CreatePost") {
+              return (
+                <MaterialIcons
+                  name="create"
+                  size={props.size}
+                  color={props.color}
+                />
+              );
+            }
           },
 
           tabBarActiveTintColor: "red",
@@ -173,6 +182,11 @@ function HomeTab({ navigation }) {
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen
+        name="CreatePost"
+        component={CreatePostScreen}
+        navigation={navigation}
+      />
       <Tab.Screen name="Settings" component={SettingsScreen} />
       <Tab.Screen name="Logout" component={LogoutScreen} />
       {/* <Tab.Screen name="Store" component={StoreScreen} /> */}

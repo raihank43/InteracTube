@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import {
   StyleSheet,
@@ -19,50 +18,39 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-export default function Login({ navigation }) {
+export default function CreatePostScreen({ navigation }) {
   const [text, setText] = useState("");
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Welcome to HackTube</Text>
+        <Text style={styles.title}>Create new Post</Text>
         <Text style={{ color: "white", fontWeight: "bold" }}>
           Silahkan Login.
         </Text>
         <Text style={styles.text}>{text}</Text>
         <View style={styles.form}>
           <TextInput
-            placeholder="Email"
+            placeholder="What's happening?"
             style={styles.textInputForm}
             value={text}
             onChangeText={setText}
           ></TextInput>
 
           <TextInput
-            placeholder="Password"
+            placeholder="Insert Image Url..."
             style={styles.textInputForm}
             value={text}
             onChangeText={setText}
           ></TextInput>
         </View>
         <TouchableOpacity
-          style={styles.login}
+          style={styles.Post}
           onPress={() => {
             navigation.navigate("HomeTab");
           }}
         >
-          <Text style={styles.loginText}>LOGIN</Text>
+          <Text style={styles.submitText}>SUBMIT</Text>
         </TouchableOpacity>
-        <Text style={{ color: "white", marginTop: 20 }}>
-          Belum Punya Akun? Silahkan{" "}
-          <Text
-            style={{ color: "red", fontWeight: "bold", fontSize: 15 }}
-            onPress={() => {
-              navigation.navigate("Register");
-            }}
-          >
-            Register
-          </Text>
-        </Text>
 
         {/* <StatusBar style="auto" /> */}
       </SafeAreaView>
@@ -92,7 +80,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  login: {
+  Post: {
     backgroundColor: "red",
     padding: 10,
     borderRadius: 5,
@@ -102,7 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  loginText: {
+  submitText: {
     color: "white",
     textAlign: "center",
     fontWeight: "bold",

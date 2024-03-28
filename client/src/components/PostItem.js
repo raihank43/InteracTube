@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
 
   PostItem: {
-    backgroundColor: "white",
+    width: "100%",
     padding: 20,
     marginVertical: 8,
     // marginHorizontal: 16,
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
 
   PostBody: {
     width: "100%",
-    borderWidth: 1,
-    borderColor: "black",
+    // borderWidth: 1,
+    // borderColor: "black",
     Image: {
       width: "100%",
       height: 200,

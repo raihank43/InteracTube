@@ -23,15 +23,12 @@ export default function HomeTab({ navigation }) {
             backgroundColor: "#262626ff",
           },
           tabBarIcon: (props) => {
-            props.size = 15;
-
             if (route.name == "Home") {
               return (
                 <SimpleLineIcons
                   name="feed"
                   size={props.size}
                   color={props.color}
-
                 />
               );
             }
@@ -69,6 +66,15 @@ export default function HomeTab({ navigation }) {
 
           tabBarActiveTintColor: "red",
           tabBarInactiveTintColor: "white",
+
+          tabBarLabel: ({ focused, color }) => {
+            let label;
+            if (route.name === "Home") {
+              label = "Beranda";
+            } else if (route.name === "Settings") {
+              label = "Pengaturan";
+            }
+          },
         };
       }}
     >

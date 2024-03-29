@@ -16,31 +16,12 @@ import {
 import Login from "../screens/Login";
 import Register from "../screens/Register";
 import HomeTab from "./HomeTab";
+import PostDetail from "../screens/PostDetail";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { AuthContext } from "../context/AuthContext";
-// import client from "../config/apolloClient";
-
-function DetailsScreen({ route, navigation }) {
-  console.log(route.params);
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Details Screen</Text>
-
-      <Text>ID: {route.params.id}</Text>
-      <Text>Type: {route.params.type}</Text>
-
-      <Button
-        title="Go to Store Navigate"
-        onPress={() => {
-          navigation.navigate("Store");
-        }}
-      />
-    </View>
-  );
-}
 
 function StoreScreen({ navigation }) {
   return (
@@ -122,7 +103,7 @@ export default function MainStack() {
               name="HomeTab"
               component={HomeTab}
             />
-            <Stack.Screen name="Details" component={DetailsScreen} />
+            <Stack.Screen name="Details" component={PostDetail} />
             <Stack.Screen name="Store" component={StoreScreen} />
           </>
         ) : (

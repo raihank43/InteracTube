@@ -6,7 +6,6 @@ import CreatePostScreen from "../screens/CreatePost";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
-
 const Tab = createBottomTabNavigator();
 export default function HomeTab({ navigation }) {
   return (
@@ -18,17 +17,21 @@ export default function HomeTab({ navigation }) {
           },
           headerTitleStyle: {
             color: "black",
+            fontWeight: "bold",
           },
           tabBarStyle: {
             backgroundColor: "#262626ff",
           },
           tabBarIcon: (props) => {
+            props.size = 15;
+
             if (route.name == "Home") {
               return (
                 <SimpleLineIcons
                   name="feed"
                   size={props.size}
                   color={props.color}
+
                 />
               );
             }

@@ -1,4 +1,5 @@
 import { View, StyleSheet, Text, Image } from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function PostItem({ Post }) {
   return (
@@ -14,12 +15,18 @@ export default function PostItem({ Post }) {
           ""
         )}
 
-        <Text style={styles.title}>{Post.content}</Text>
+        <Text style={styles.PostContent}>{Post.content}</Text>
       </View>
 
       <View style={styles.PostFooter}>
-        <Text>Likes: {Post.likes.length}</Text>
-        <Text>Comments: {Post.comments.length}</Text>
+        <View style={styles.PostFooter.footerItem}>
+          <FontAwesome name="thumbs-up" size={24} color="black" />
+          <Text>{Post.likes.length} Likes</Text>
+        </View>
+        <View style={styles.PostFooter.footerItem}>
+          <FontAwesome name="comment" size={24} color="black" />
+          <Text>{Post.comments.length} Comments</Text>
+        </View>
       </View>
     </View>
   );
@@ -32,10 +39,13 @@ const styles = StyleSheet.create({
   },
 
   PostItem: {
+    borderRadius: 10,
     width: "100%",
     padding: 20,
     marginVertical: 8,
+    width: "100%",
     // marginHorizontal: 16,
+    backgroundColor: "white",
   },
 
   PostHeader: {
@@ -56,9 +66,20 @@ const styles = StyleSheet.create({
     },
   },
 
+  PostContent: {
+    fontSize: 16,
+  },
+
   PostFooter: {
+    marginTop: 30,
     flexDirection: "row",
-    gap: 20,
+    justifyContent: "space-around",
+    footerItem: {
+      borderStyle: "solid",
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 15,
+    },
   },
 
   title: {

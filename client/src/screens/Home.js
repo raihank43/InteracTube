@@ -19,7 +19,7 @@ import { GET_POSTS } from "../queries/GetPostQuery";
 
 export default function HomeScreen({ navigation }) {
   const { loading, error, data } = useQuery(GET_POSTS);
-  console.log(error)
+  console.log(error);
 
   // loading dan error harus di handle
   if (loading) {
@@ -27,6 +27,7 @@ export default function HomeScreen({ navigation }) {
       <SafeAreaProvider>
         <SafeAreaView
           style={{
+            ...styles.HomeContainer,
             justifyContent: "center",
             alignItems: "center",
             height: "100%",
@@ -43,27 +44,22 @@ export default function HomeScreen({ navigation }) {
       <SafeAreaProvider>
         <SafeAreaView
           style={{
+            ...styles.HomeContainer,
             justifyContent: "center",
             alignItems: "center",
             height: "100%",
           }}
         >
-          <Text style={{ fontWeight: "bold" }}>Something went wrong: </Text>
+          <Text style={{ fontWeight: "bold", color: "white" }}>
+            Something went wrong:{" "}
+          </Text>
         </SafeAreaView>
       </SafeAreaProvider>
     );
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Text>Home Screen</Text>
-
+    <View style={styles.HomeContainer}>
       {/* Posts */}
       <FlatList
         data={data.findAllPost}
@@ -92,6 +88,12 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  HomeContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#262626ff",
+  },
   PostContainer: {
     width: "100%",
   },

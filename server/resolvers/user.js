@@ -46,6 +46,7 @@ const resolvers = {
   Mutation: {
     register: async (_, args) => {
       const newUser = args.newUser;
+
       const result = await User.createUser(newUser);
       return result;
     },
@@ -74,7 +75,7 @@ const resolvers = {
         {
           _id: user._id,
           email: user.email,
-          username: user.username
+          username: user.username,
         },
         JWT_SECRET_KEY
       );

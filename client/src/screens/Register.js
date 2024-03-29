@@ -16,9 +16,40 @@ import {
   SafeAreaInsetsContext,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { REGISTER_MUTATION } from "../mutations/RegisterMutation";
+import { useMutation } from "@apollo/client";
+import ToastManager, { Toast } from "toastify-react-native";
 
 export default function Register({ navigation }) {
-  const [text, setText] = useState("");
+  const [registerData, setRegisterData] = useState({
+    username: "",
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [registerUser, { data, loading, error }] = useMutation(
+    REGISTER_MUTATION,
+    {
+      onCompleted: () => {
+        navigation.navigate("Login");
+      },
+      onError: (error) => {
+        showToast(error.message);
+      },
+    }
+  );
+
+  const handleChangeInput = (name, value) => {
+    setRegisterData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const showToast = (message) => {
+    Toast.error(message);
+  };
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -26,44 +57,64 @@ export default function Register({ navigation }) {
         <Text style={{ color: "white", fontWeight: "bold" }}>
           Silahkan Register.
         </Text>
-        <Text style={styles.text}>{text}</Text>
+        {/* <Text style={styles.text}>{text}</Text> */}
         <View style={styles.form}>
           <TextInput
             placeholder="Username"
             style={styles.textInputForm}
-            value={text}
-            onChangeText={setText}
+            value={registerData.username}
+            onChangeText={(value) => {
+              handleChangeInput("username", value);
+            }}
           ></TextInput>
 
           <TextInput
             placeholder="Name"
             style={styles.textInputForm}
-            value={text}
-            onChangeText={setText}
+            value={registerData.name}
+            onChangeText={(value) => {
+              handleChangeInput("name", value);
+            }}
           ></TextInput>
 
           <TextInput
             placeholder="Email"
             style={styles.textInputForm}
-            value={text}
-            onChangeText={setText}
+            value={registerData.email}
+            onChangeText={(value) => {
+              handleChangeInput("email", value);
+            }}
           ></TextInput>
 
           <TextInput
             placeholder="Password"
+            secureTextEntry
             style={styles.textInputForm}
-            value={text}
-            onChangeText={setText}
+            value={registerData.password}
+            onChangeText={(value) => {
+              handleChangeInput("password", value);
+            }}
           ></TextInput>
         </View>
+        <ToastManager width={300} />
         <TouchableOpacity
           style={styles.login}
           onPress={() => {
-            navigation.navigate("Login");
+            registerUser({
+              variables: {
+                newUser: {
+                  email: registerData.email,
+                  name: registerData.name,
+                  password: registerData.password,
+                  username: registerData.username,
+                },
+              },
+            });
           }}
         >
           <Text style={styles.loginText}>REGISTER</Text>
         </TouchableOpacity>
+
         <Text style={{ color: "white", marginTop: 20, fontSize: 15 }}>
           Sudah Punya Akun? Silahkan{" "}
           <Text

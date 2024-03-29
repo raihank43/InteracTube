@@ -24,12 +24,20 @@ class User {
     return data;
   }
 
+  static async findByEmail(email) {
+    const userCollection = this.collection();
+    const data = await userCollection.findOne({
+      email: email,
+    });
+    return data;
+  }
+
   static async findByUsername(username) {
     const userCollection = this.collection();
     const result = await userCollection.findOne({
-      username
-    })
-    return result
+      username,
+    });
+    return result;
   }
 
   static async createUser(newUser) {
@@ -37,16 +45,75 @@ class User {
     /**
       VALIDASI dapat dilakukan disini secara manual menggunakan js
     */
-    const isEmailValid = validator.isEmail(newUser.email);
-
-    // validasi email/handle error
-    if (!isEmailValid) {
-      throw new GraphQLError("Invalid argument value", {
+    if (
+      !newUser.username &&
+      !newUser.email &&
+      !newUser.password &&
+      !newUser.name
+    ) {
+      throw new GraphQLError("Please fill the fields.", {
         extensions: {
           code: "BAD_USER_INPUT",
         },
       });
     }
+
+    if (!newUser.username) {
+      throw new GraphQLError("Username can't be empty", {
+        extensions: {
+          code: "BAD_USER_INPUT",
+        },
+      });
+    }
+
+    //handling unique username
+    const findUsername = await this.findByUsername(newUser.username);
+
+    if (findUsername) {
+      throw new GraphQLError("Username is already exist", {
+        extensions: {
+          code: "BAD_USER_INPUT",
+        },
+      });
+    }
+
+    if (!newUser.email) {
+      throw new GraphQLError("Email can't be empty", {
+        extensions: {
+          code: "BAD_USER_INPUT",
+        },
+      });
+    }
+    const isEmailValid = validator.isEmail(newUser.email);
+
+    // validasi email/handle error
+    if (!isEmailValid) {
+      throw new GraphQLError("Invalid Email.", {
+        extensions: {
+          code: "BAD_USER_INPUT",
+        },
+      });
+    }
+
+    // handling duplicate email
+    const findEmail = await this.findByEmail(newUser.email);
+
+    if (findEmail) {
+      throw new GraphQLError("Email already exist", {
+        extensions: {
+          code: "BAD_USER_INPUT",
+        },
+      });
+    }
+
+    if (!newUser.password) {
+      throw new GraphQLError("Password can't be empty", {
+        extensions: {
+          code: "BAD_USER_INPUT",
+        },
+      });
+    }
+
     const result = await userCollection.insertOne({
       ...newUser,
       password: bcryptjs.hashSync(newUser.password),
@@ -62,10 +129,10 @@ class User {
     const userCollection = this.collection();
 
     const findUser = await userCollection.findOne({
-      email
-    })
+      email,
+    });
 
-    return findUser
+    return findUser;
   }
 }
 

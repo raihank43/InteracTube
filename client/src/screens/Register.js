@@ -31,10 +31,13 @@ export default function Register({ navigation }) {
     REGISTER_MUTATION,
     {
       onCompleted: () => {
-        navigation.navigate("Login");
+        ToastSuccess();
+        setTimeout(() => {
+          navigation.navigate("Login");
+        }, 1000);
       },
       onError: (error) => {
-        showToast(error.message);
+        ToastError(error.message);
       },
     }
   );
@@ -46,8 +49,12 @@ export default function Register({ navigation }) {
     }));
   };
 
-  const showToast = (message) => {
+  const ToastError = (message) => {
     Toast.error(message);
+  };
+
+  const ToastSuccess = () => {
+    Toast.success("Success register, please Login.");
   };
 
   return (

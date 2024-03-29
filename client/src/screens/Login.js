@@ -22,14 +22,18 @@ import { AuthContext } from "../context/AuthContext";
 import { gql, useMutation } from "@apollo/client";
 import * as SecureStore from "expo-secure-store";
 import { LOGIN_MUTATION } from "../mutations/LoginMutation";
+import ToastManager, { Toast } from "toastify-react-native";
 
 export default function Login({ navigation }) {
   const [text, setText] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
-  // console.log(data, loading, error);
+  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION, {
+    onError: (error) => {
+      Toast.error(error.message);
+    },
+  });
 
   const { setIsSignedIn } = useContext(AuthContext);
   return (
@@ -56,6 +60,7 @@ export default function Login({ navigation }) {
             onChangeText={setPassword}
           ></TextInput>
         </View>
+        <ToastManager width={300} />
         <TouchableOpacity
           style={styles.login}
           onPress={async () => {

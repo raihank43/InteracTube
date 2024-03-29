@@ -124,16 +124,6 @@ class User {
     const createdUser = this.findById(result.insertedId);
     return createdUser;
   }
-
-  static async findByEmail(email) {
-    const userCollection = this.collection();
-
-    const findUser = await userCollection.findOne({
-      email,
-    });
-
-    return findUser;
-  }
 }
 
 module.exports = User;

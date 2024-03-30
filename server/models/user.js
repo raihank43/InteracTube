@@ -40,6 +40,40 @@ class User {
     return result;
   }
 
+  static async getUserProfile(_id) {
+    const userCollection = this.collection();
+    const data = await userCollection.aggregate([
+      {
+        $match: {
+          _id: new ObjectId(_id),
+        },
+      },
+      {
+        $lookup: {
+          from: "follows",
+          localField: "_id",
+          foreignField: "followingId",
+          as: "Followers",
+        },
+      },
+      {
+        $lookup: {
+          from: "follows",
+          localField: "_id",
+          foreignField: "followerId",
+          as: "Followings",
+        },
+      },
+      {
+        $project: {
+          password: 0,
+        },
+      },
+    ]).toArray()
+
+    return data[0]
+  }
+
   static async createUser(newUser) {
     const userCollection = this.collection();
     /**

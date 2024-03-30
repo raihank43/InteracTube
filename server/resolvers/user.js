@@ -30,8 +30,9 @@ const resolvers = {
     findCurrentLogUser: async (_, args, contextValue) => {
       const decodedToken = await contextValue.authentication();
 
-      const user = await User.findById(decodedToken._id);
-      return user
+      const user = await User.getUserProfile(decodedToken._id);
+      console.log(user, " <<<<<< dari resolvers");
+      return user;
     },
   },
 

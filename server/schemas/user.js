@@ -5,6 +5,9 @@ const typeDefs = `#graphql
       username: String
       email: String
       password: String
+      createdAt: String
+      Followers: [FollowersDetail]
+      Followings: [FollowingsDetail]
   }
 
   input RegisterUser {
@@ -12,6 +15,22 @@ const typeDefs = `#graphql
     username: String! 
     email: String! 
     password: String!
+  }
+
+  type FollowersDetail{
+    _id: ID
+    followingId: ID
+    followerId: ID
+    createdAt: String
+    updatedAt: String
+  }
+
+  type FollowingsDetail{
+    _id: ID
+    followingId: ID
+    followerId: ID
+    createdAt: String
+    updatedAt: String
   }
 
 

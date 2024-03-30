@@ -2,10 +2,12 @@ import React from "react";
 import { View, Text, Image, StyleSheet, Button } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
-import { GET_CURRENT_LOG_USER } from "../queries/GetCurrentLogUser";
+import { GET_CURRENT_LOG_USER } from "../queries/GetUserProfile";
 import { useQuery } from "@apollo/client";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator } from "react-native";
+import { GET_FOLLOWING_DETAIL } from "../queries/GetFollowingDetail";
+import { GET_FOLLOWER_DETAIL } from "../queries/GetFollowerDetail";
 
 export default function Profile() {
   const { data, loading, error } = useQuery(GET_CURRENT_LOG_USER);
@@ -46,6 +48,8 @@ export default function Profile() {
     );
   }
 
+  console.log(data);
+
   const user = {
     profileImage:
       "https://th.bing.com/th/id/OIP.WBjdfpIWhgt8n8WkzhOpJwHaKX?rs=1&pid=ImgDetMain",
@@ -65,8 +69,12 @@ export default function Profile() {
           <Text style={styles.profileDetails.username}>
             @{data.findCurrentLogUser.username}
           </Text>
-          <Text style={styles.profileDetails.following}>Following: 100</Text>
-          <Text style={styles.profileDetails.follower}>Following: 100</Text>
+          <Text style={styles.profileDetails.following}>
+            Following: {data.findCurrentLogUser.Followings.length}
+          </Text>
+          <Text style={styles.profileDetails.follower}>
+            Follower: {data.findCurrentLogUser.Followers.length}
+          </Text>
           <Button title="Follow" onPress={() => {}} />
         </View>
       </View>
@@ -109,7 +117,7 @@ const styles = StyleSheet.create({
     },
     following: {},
     follower: {},
-    width: "60%"
+    width: "60%",
   },
 
   postTemplate: {

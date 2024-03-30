@@ -72,7 +72,7 @@ class Post {
         },
       ])
       .toArray();
-    console.log(_id, "<<<<<<<<<< idnya");
+    // console.log(_id, "<<<<<<<<<< idnya");
     return data[0];
   }
 

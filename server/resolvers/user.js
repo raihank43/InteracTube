@@ -4,26 +4,11 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
-// let users = [
-//   {
-//     id: 1,
-//     name: "raihan",
-//     username: "raihank43",
-//     email: "raihan@mail.com",
-//     password: "password",
-//   },
-//   {
-//     id: 2,
-//     name: "raihan2",
-//     username: "raihank432",
-//     email: "raihan2@mail.com",
-//     password: "password",
-//   },
-// ];
-
 const resolvers = {
   Query: {
-    findAllUsers: async () => {
+    findAllUsers: async (_, args, contextValue) => {
+      const decodedToken = await contextValue.authentication();
+
       // implementasi bagaimana cara mendapatkan datanya
       const users = await User.findAll();
       return users;
@@ -40,6 +25,13 @@ const resolvers = {
     findUserByUsername: async (_, args) => {
       const findUser = await User.findByUsername(args.username);
       return findUser;
+    },
+
+    findCurrentLogUser: async (_, args, contextValue) => {
+      const decodedToken = await contextValue.authentication();
+
+      const user = await User.findById(decodedToken._id);
+      return user
     },
   },
 

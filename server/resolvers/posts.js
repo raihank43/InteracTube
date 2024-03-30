@@ -33,7 +33,6 @@ const resolvers = {
       const { _id } = args;
 
       const result = await Post.findById(_id);
-      console.log(result, "<<<< ini result di resolvers")
       return result;
     },
   },

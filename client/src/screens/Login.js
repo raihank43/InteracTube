@@ -75,7 +75,8 @@ export default function Login({ navigation }) {
                 "accessToken",
                 response.data.login.access_token
               );
-              // console.log(response);
+              console.log(response.data.login);
+              
               setIsSignedIn(true);
             } catch (error) {
               console.log(error);

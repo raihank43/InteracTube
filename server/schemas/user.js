@@ -25,6 +25,7 @@ const typeDefs = `#graphql
     findAllUsers: [User]
     findUserById(_id: ID!): User
     findUserByUsername(username: String!): User
+    findCurrentLogUser: User
 
   }
 

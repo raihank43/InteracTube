@@ -5,6 +5,8 @@ import CreatePostScreen from "../screens/CreatePost";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import Profile from "../screens/Profile";
 
 const Tab = createBottomTabNavigator();
 export default function HomeTab({ navigation }) {
@@ -62,6 +64,16 @@ export default function HomeTab({ navigation }) {
                 />
               );
             }
+
+            if (route.name == "Profile") {
+              return (
+                <Ionicons
+                  name="person-circle"
+                  size={props.size}
+                  color={props.color}
+                />
+              );
+            }
           },
 
           tabBarActiveTintColor: "red",
@@ -76,8 +88,8 @@ export default function HomeTab({ navigation }) {
         navigation={navigation}
       />
       {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
+      <Tab.Screen name="Profile" component={Profile} />
       <Tab.Screen name="Logout" component={LogoutScreen} />
-      {/* <Tab.Screen name="Store" component={StoreScreen} /> */}
     </Tab.Navigator>
   );
 }

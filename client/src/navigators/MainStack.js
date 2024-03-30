@@ -55,37 +55,37 @@ function StoreScreen({ navigation }) {
   );
 }
 
-function SettingsScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Settings Screen</Text>
+// function SettingsScreen({ navigation }) {
+//   return (
+//     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+//       <Text>Settings Screen</Text>
 
-      <Button
-        title="Go to Details"
-        onPress={() => {
-          navigation.navigate("Details");
-        }}
-      />
+//       <Button
+//         title="Go to Details"
+//         onPress={() => {
+//           navigation.navigate("Details");
+//         }}
+//       />
 
-      <Button
-        title="Go to Details Push"
-        onPress={() => {
-          navigation.push("Details", {
-            id: 90,
-            type: "dress",
-          });
-        }}
-      />
+//       <Button
+//         title="Go to Details Push"
+//         onPress={() => {
+//           navigation.push("Details", {
+//             id: 90,
+//             type: "dress",
+//           });
+//         }}
+//       />
 
-      <Button
-        title="Go to Back"
-        onPress={() => {
-          navigation.goBack();
-        }}
-      />
-    </View>
-  );
-}
+//       <Button
+//         title="Go to Back"
+//         onPress={() => {
+//           navigation.goBack();
+//         }}
+//       />
+//     </View>
+//   );
+// }
 
 const Stack = createNativeStackNavigator();
 export default function MainStack() {

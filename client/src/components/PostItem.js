@@ -1,9 +1,17 @@
+import { useMutation } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { LIKE_POST } from "../mutations/LikePostMutation";
+import { GET_POSTS } from "../queries/GetPostQuery";
 
 export default function PostItem({ Post }) {
   const navigation = useNavigation();
+  const [addLike] = useMutation(LIKE_POST, {
+    refetchQueries: {
+      GET_POSTS,
+    },
+  });
 
   // console.log(Post.author ? Post.author : "UNDEFINE NIH", "<<<<<<<<<<<<<<");
   // console.log(Post._id ? Post._id : "UNDEFINED NIHHHHH");
@@ -17,10 +25,7 @@ export default function PostItem({ Post }) {
       }}
     >
       <View style={styles.PostHeader}>
-        <Text style={styles.PostHeader.AuthorName}>
-          {" "}
-          {Post.author.name}
-        </Text>
+        <Text style={styles.PostHeader.AuthorName}> {Post.author.name}</Text>
       </View>
 
       <View style={styles.PostBody}>
@@ -35,10 +40,22 @@ export default function PostItem({ Post }) {
 
       <View style={styles.PostFooter}>
         <TouchableOpacity>
-          <View style={styles.PostFooter.footerItem}>
-            <FontAwesome name="thumbs-up" size={24} color="black" />
-            <Text>{Post.likes.length} Likes</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              addLike({
+                variables: {
+                  newLike: {
+                    postId: Post._id,
+                  },
+                },
+              });
+            }}
+          >
+            <View style={styles.PostFooter.footerItem}>
+              <FontAwesome name="thumbs-up" size={24} color="black" />
+              <Text>{Post.likes.length} Likes</Text>
+            </View>
+          </TouchableOpacity>
         </TouchableOpacity>
         <View style={styles.PostFooter.footerItem}>
           <FontAwesome name="comment" size={24} color="black" />

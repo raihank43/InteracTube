@@ -116,6 +116,10 @@ class Post {
   static async likePost(data) {
     const postCollection = this.collection();
 
+    console.log(data)
+
+    // validasi user - like or unlike
+
     const result = await postCollection.updateOne(
       {
         _id: new ObjectId(data.postId),

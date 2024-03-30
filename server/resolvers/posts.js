@@ -57,14 +57,18 @@ const resolvers = {
       return result;
     },
 
-    likePost: async (_, args) => {
+    likePost: async (_, args, contextValue) => {
       const decodedToken = await contextValue.authentication();
 
       const likerUsername = decodedToken.username;
 
       const newLike = args.newLike;
-      newLike.username = commenterUsername;
+      newLike.username = likerUsername;
       const result = await Post.likePost(newLike);
+
+
+      // console.log(decodedToken)
+      
 
       await redis.del("posts");
       return result;

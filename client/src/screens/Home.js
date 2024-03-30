@@ -15,12 +15,13 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import PostItem from "../components/PostItem";
-import { useQuery, gql } from "@apollo/client";
-import { GET_POSTS } from "../queries/GetPostQuery";
+import { useQuery, gql, useMutation } from "@apollo/client";
+import { GET_POSTS } from "../queries/GetPostQuery"; 
+import { LIKE_POST } from "../mutations/LikePostMutation";
 
 export default function HomeScreen({ navigation }) {
   const { loading, error, data } = useQuery(GET_POSTS);
-
+  
   // loading dan error harus di handle
   if (loading) {
     return (

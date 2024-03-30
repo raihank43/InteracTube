@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,12 +7,15 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
+  TextInput,
+  Button,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { GET_POST_BY_ID } from "../queries/GetPostDetail";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import PostComment from "../components/PostComments";
+import { CREATE_COMMENT } from "../mutations/CreateCommentMutation";
 
 export default function PostDetail({ navigation, route }) {
   const { _id } = route.params;
@@ -21,6 +24,13 @@ export default function PostDetail({ navigation, route }) {
       _id: _id,
     },
   });
+  const [addComment] = useMutation(CREATE_COMMENT, {
+    refetchQueries: [GET_POST_BY_ID],
+  });
+
+  const [comment, setComment] = useState("");
+
+  // console.log(comment)
 
   if (loading) {
     return (
@@ -59,33 +69,59 @@ export default function PostDetail({ navigation, route }) {
     );
   }
 
-  // console.log(data.findPostById);
-
   return (
-    <View style={styles.container}>
-      <Text style={{ color: "white" }}>INI ID NYA: {_id}</Text>
-      <Text style={styles.author}>{data.findPostById.author.name}</Text>
-      {data.findPostById.imgUrl ? (
-        <Image style={styles.image} src={data.findPostById.imgUrl} />
-      ) : (
-        ""
-      )}
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <Text style={{ color: "white" }}>INI ID NYA: {_id}</Text>
+        <Text style={styles.author}>{data.findPostById.author.name}</Text>
+        {data.findPostById.imgUrl ? (
+          <Image style={styles.image} src={data.findPostById.imgUrl} />
+        ) : (
+          ""
+        )}
 
-      <Text style={styles.content}>{data.findPostById.content}</Text>
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.likeButton}>
-          <FontAwesome name="thumbs-up" size={24} color="red" />
-          <Text style={styles.likeCount}>{data.findPostById.likes.length}</Text>
-        </TouchableOpacity>
-        <View style={styles.comments}>
-          <FlatList
-            data={data.findPostById.comments}
-            renderItem={({ item }) => <PostComment PostComment={item} />}
-            keyExtractor={(item) => item._id}
-          />
+        <Text style={styles.content}>{data.findPostById.content}</Text>
+        <View style={styles.footer}>
+          <TouchableOpacity style={styles.likeButton}>
+            <FontAwesome name="thumbs-up" size={24} color="red" />
+            <Text style={styles.likeCount}>
+              {data.findPostById.likes.length}
+            </Text>
+          </TouchableOpacity>
+          <View style={styles.comments}>
+            <FlatList
+              data={data.findPostById.comments}
+              renderItem={({ item }) => <PostComment PostComment={item} />}
+              keyExtractor={(item) => item._id}
+            />
+          </View>
         </View>
-      </View>
-    </View>
+        <View style={styles.commentBox}>
+          <TextInput
+            style={styles.input}
+            value={comment}
+            onChangeText={setComment}
+            placeholder="Add a comment..."
+            placeholderTextColor="#888"
+          />
+          <TouchableOpacity
+            style={styles.sendButton}
+            onPress={() => {
+              addComment({
+                variables: {
+                  newComment: {
+                    content: comment,
+                    postId: _id,
+                  },
+                },
+              });
+            }}
+          >
+            <MaterialIcons name="send" size={24} color="red" />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
@@ -125,5 +161,27 @@ const styles = StyleSheet.create({
   },
   comment: {
     color: "white",
+  },
+  commentBox: {
+    backgroundColor: "#262626ff",
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 10,
+    position: "absolute",
+    bottom: 0,
+    left: 10,
+    padding: 10,
+  },
+  input: {
+    flex: 1,
+    borderColor: "#888",
+    borderWidth: 1,
+    borderRadius: 20,
+    padding: 10,
+    color: "black",
+    backgroundColor: "white",
+  },
+  sendButton: {
+    marginLeft: 10,
   },
 });

@@ -1,11 +1,26 @@
-import { View, StyleSheet, Text, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function PostItem({ Post }) {
+  const navigation = useNavigation();
+
+  // console.log(Post.author ? Post.author : "UNDEFINE NIH", "<<<<<<<<<<<<<<");
+  // console.log(Post._id ? Post._id : "UNDEFINED NIHHHHH");
   return (
-    <View style={styles.PostItem}>
+    <TouchableOpacity
+      style={styles.PostItem}
+      onPress={() => {
+        navigation.push("PostDetail", {
+          _id: Post._id,
+        });
+      }}
+    >
       <View style={styles.PostHeader}>
-        <Text style={styles.PostHeader.AuthorName}>{Post.author.name}</Text>
+        <Text style={styles.PostHeader.AuthorName}>
+          {" "}
+          {Post.author.name}
+        </Text>
       </View>
 
       <View style={styles.PostBody}>
@@ -19,16 +34,18 @@ export default function PostItem({ Post }) {
       </View>
 
       <View style={styles.PostFooter}>
-        <View style={styles.PostFooter.footerItem}>
-          <FontAwesome name="thumbs-up" size={24} color="black" />
-          <Text>{Post.likes.length} Likes</Text>
-        </View>
+        <TouchableOpacity>
+          <View style={styles.PostFooter.footerItem}>
+            <FontAwesome name="thumbs-up" size={24} color="black" />
+            <Text>{Post.likes.length} Likes</Text>
+          </View>
+        </TouchableOpacity>
         <View style={styles.PostFooter.footerItem}>
           <FontAwesome name="comment" size={24} color="black" />
           <Text>{Post.comments.length} Comments</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

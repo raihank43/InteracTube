@@ -103,7 +103,7 @@ export default function MainStack() {
               name="HomeTab"
               component={HomeTab}
             />
-            <Stack.Screen name="Details" component={PostDetail} />
+            <Stack.Screen name="PostDetail" component={PostDetail} />
             <Stack.Screen name="Store" component={StoreScreen} />
           </>
         ) : (

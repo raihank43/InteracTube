@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import {
   SafeAreaView,
@@ -19,7 +20,6 @@ import { GET_POSTS } from "../queries/GetPostQuery";
 
 export default function HomeScreen({ navigation }) {
   const { loading, error, data } = useQuery(GET_POSTS);
-  console.log(error);
 
   // loading dan error harus di handle
   if (loading) {
@@ -61,13 +61,14 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.HomeContainer}>
       {/* Posts */}
+
       <FlatList
         data={data.findAllPost}
         renderItem={({ item }) => <PostItem Post={item} />}
         keyExtractor={(item) => item._id}
       />
 
-      <Button
+      {/* <Button
         title="Go to Details"
         onPress={() => {
           navigation.navigate("Details", {
@@ -75,14 +76,14 @@ export default function HomeScreen({ navigation }) {
             type: "t-shirt",
           });
         }}
-      />
+      /> */}
 
-      <Button
+      {/* <Button
         title="Go to Details Push"
         onPress={() => {
           navigation.push("Details");
         }}
-      />
+      /> */}
     </View>
   );
 }

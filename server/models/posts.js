@@ -41,11 +41,39 @@ class Post {
 
   static async findById(_id) {
     const postCollection = this.collection();
-    const data = await postCollection.findOne({
-      _id: new ObjectId(_id),
-    });
+    // const data = await postCollection.findOne({
+    //   _id: new ObjectId(_id),
+    // });
 
-    return data;
+    const data = await postCollection
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(_id),
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "authorId",
+            foreignField: "_id",
+            as: "author",
+          },
+        },
+        {
+          $unwind: {
+            path: "$author",
+          },
+        },
+        {
+          $project: {
+            "author.password": 0,
+          },
+        },
+      ])
+      .toArray();
+    console.log(_id, "<<<<<<<<<< idnya");
+    return data[0];
   }
 
   static async insert(data) {

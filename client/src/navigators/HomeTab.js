@@ -66,15 +66,6 @@ export default function HomeTab({ navigation }) {
 
           tabBarActiveTintColor: "red",
           tabBarInactiveTintColor: "white",
-
-          tabBarLabel: ({ focused, color }) => {
-            let label;
-            if (route.name === "Home") {
-              label = "Beranda";
-            } else if (route.name === "Settings") {
-              label = "Pengaturan";
-            }
-          },
         };
       }}
     >

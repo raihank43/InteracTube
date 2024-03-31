@@ -6,6 +6,7 @@ import { GET_CURRENT_LOG_USER } from "../queries/GetUserProfile";
 import { GET_USER_BY_ID } from "../queries/GetUserById";
 import { FOLLOW_USER } from "../mutations/FollowMutation";
 import { GET_ALL_USERS } from "../queries/GetAllUsers";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 
 export default function ProfileCard({ Users }) {
   const navigation = useNavigation();

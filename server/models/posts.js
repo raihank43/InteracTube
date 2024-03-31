@@ -115,25 +115,49 @@ class Post {
 
   static async likePost(data) {
     const postCollection = this.collection();
-
-    console.log(data)
-
     // validasi user - like or unlike
 
-    const result = await postCollection.updateOne(
-      {
-        _id: new ObjectId(data.postId),
-      },
-      {
-        $push: {
-          likes: { ...data, createdAt: new Date(), updatedAt: new Date() },
-        },
-      }
+    // validasi like/unlike
+    const findPost = await postCollection.findOne({
+      _id: new ObjectId(data.postId),
+    });
+
+    // find whether current log user is on the list of people who likes the post
+    const findUser = findPost.likes.find(
+      (obj) => obj.username.toString() === data.username
     );
 
-    const updatedPostWithLike = await this.findById(data.postId);
+    // if user found, we "pull out" the userdata from the "likes" lists
+    if (findUser) {
+      const result = await postCollection.updateOne(
+        {
+          _id: new ObjectId(data.postId),
+        },
+        {
+          $pull: {
+            likes: { username: data.username },
+          },
+        }
+      );
+      console.log("user pulled out || User unlike the post");
+      const updatedPostWithLike = await this.findById(data.postId);
+      return updatedPostWithLike;
+    } else {
+      // if user not found we "push" the user data to the likes list
+      const result = await postCollection.updateOne(
+        {
+          _id: new ObjectId(data.postId),
+        },
+        {
+          $push: {
+            likes: { ...data, createdAt: new Date(), updatedAt: new Date() },
+          },
+        }
+      );
 
-    return updatedPostWithLike;
+      const updatedPostWithLike = await this.findById(data.postId);
+      return updatedPostWithLike;
+    }
   }
 }
 

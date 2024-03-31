@@ -1,9 +1,10 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LIKE_POST } from "../mutations/LikePostMutation";
 import { GET_POSTS } from "../queries/GetPostQuery";
+import { GET_CURRENT_LOG_USER } from "../queries/GetUserProfile";
 
 export default function PostItem({ Post }) {
   const navigation = useNavigation();
@@ -13,10 +14,53 @@ export default function PostItem({ Post }) {
     },
   });
 
-  // console.log(Post.author ? Post.author : "UNDEFINE NIH", "<<<<<<<<<<<<<<");
-  // console.log(Post._id ? Post._id : "UNDEFINED NIHHHHH");
+  const { data, loading, error } = useQuery(GET_CURRENT_LOG_USER);
 
-  // console.log(Post.authorId, "<<<<<<<<<<<<<");
+  if (loading) {
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView
+          style={{
+            ...styles.container,
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <ActivityIndicator size={"large"} />
+        </SafeAreaView>
+      </SafeAreaProvider>
+    );
+  }
+
+  if (error) {
+    console.log(error);
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView
+          style={{
+            ...styles.container,
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <Text style={{ fontWeight: "bold", color: "white" }}>
+            Something went wrong:{" "}
+          </Text>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    );
+  }
+
+  // console.log(Post.likes[0]?.username, "<<<<<");
+
+  const listPostLikes = Post.likes;
+  const currentLogUsername = data.findCurrentLogUser.username;
+
+  const findLikes = listPostLikes.find(
+    (obj) => obj.username.toString() === currentLogUsername
+  );
   return (
     <TouchableOpacity
       style={styles.PostItem}
@@ -59,10 +103,17 @@ export default function PostItem({ Post }) {
               });
             }}
           >
-            <View style={styles.PostFooter.footerItem}>
-              <FontAwesome name="thumbs-up" size={24} color="black" />
-              <Text>{Post.likes.length} Likes</Text>
-            </View>
+            {findLikes ? (
+              <View style={styles.PostFooter.footerItem}>
+                <FontAwesome name="thumbs-up" size={24} color="red" />
+                <Text>{Post.likes.length} Likes</Text>
+              </View>
+            ) : (
+              <View style={styles.PostFooter.footerItem}>
+                <FontAwesome name="thumbs-up" size={24} color="black" />
+                <Text>{Post.likes.length} Likes</Text>
+              </View>
+            )}
           </TouchableOpacity>
         </TouchableOpacity>
         <View style={styles.PostFooter.footerItem}>

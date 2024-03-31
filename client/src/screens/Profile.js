@@ -73,7 +73,7 @@ export default function Profile() {
           <Text style={styles.profileDetails.follower}>
             Follower: {data.findCurrentLogUser.Followers.length}
           </Text>
-          <Button title="Follow" onPress={() => {}} />
+          {/* <Button title="Follow" onPress={() => {}} /> */}
         </View>
       </View>
       <View style={styles.postTemplate}>

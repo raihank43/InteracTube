@@ -42,7 +42,7 @@ const resolvers = {
         );
         // console.log(deleteFollowData);
       } else {
-        // if not, create follow data
+        // if not, create follow data, so we "follow" them
         const result = await Follow.add({
           followerId,
           followingId,

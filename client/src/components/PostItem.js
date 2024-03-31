@@ -15,6 +15,8 @@ export default function PostItem({ Post }) {
 
   // console.log(Post.author ? Post.author : "UNDEFINE NIH", "<<<<<<<<<<<<<<");
   // console.log(Post._id ? Post._id : "UNDEFINED NIHHHHH");
+
+  // console.log(Post.authorId, "<<<<<<<<<<<<<");
   return (
     <TouchableOpacity
       style={styles.PostItem}
@@ -24,9 +26,15 @@ export default function PostItem({ Post }) {
         });
       }}
     >
-      <View style={styles.PostHeader}>
-        <Text style={styles.PostHeader.AuthorName}> {Post.author.name}</Text>
-      </View>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("PeoplesProfile", { authorId: Post.authorId });
+        }}
+      >
+        <View style={styles.PostHeader}>
+          <Text style={styles.PostHeader.AuthorName}> {Post.author.name}</Text>
+        </View>
+      </TouchableOpacity>
 
       <View style={styles.PostBody}>
         {Post.imgUrl ? (

@@ -14,8 +14,9 @@ const resolvers = {
       return users;
     },
 
-    findUserById: async (_, args) => {
+    findUserById: async (_, args, contextValue) => {
       //   console.log(args); // id nya didapat dari args
+      const decodedToken = await contextValue.authentication();
       const user = await User.findById(args._id);
 
       return user;
@@ -31,7 +32,6 @@ const resolvers = {
       const decodedToken = await contextValue.authentication();
 
       const user = await User.getUserProfile(decodedToken._id);
-      console.log(user, " <<<<<< dari resolvers");
       return user;
     },
   },

@@ -18,10 +18,37 @@ class User {
 
   static async findById(_id) {
     const userCollection = this.collection();
-    const data = await userCollection.findOne({
-      _id: new ObjectId(_id),
-    });
-    return data;
+    const data = await userCollection
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(_id),
+          },
+        },
+        {
+          $lookup: {
+            from: "follows",
+            localField: "_id",
+            foreignField: "followingId",
+            as: "Followers",
+          },
+        },
+        {
+          $lookup: {
+            from: "follows",
+            localField: "_id",
+            foreignField: "followerId",
+            as: "Followings",
+          },
+        },
+        {
+          $project: {
+            password: 0,
+          },
+        },
+      ])
+      .toArray();
+    return data[0]
   }
 
   static async findByEmail(email) {
@@ -42,36 +69,38 @@ class User {
 
   static async getUserProfile(_id) {
     const userCollection = this.collection();
-    const data = await userCollection.aggregate([
-      {
-        $match: {
-          _id: new ObjectId(_id),
+    const data = await userCollection
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(_id),
+          },
         },
-      },
-      {
-        $lookup: {
-          from: "follows",
-          localField: "_id",
-          foreignField: "followingId",
-          as: "Followers",
+        {
+          $lookup: {
+            from: "follows",
+            localField: "_id",
+            foreignField: "followingId",
+            as: "Followers",
+          },
         },
-      },
-      {
-        $lookup: {
-          from: "follows",
-          localField: "_id",
-          foreignField: "followerId",
-          as: "Followings",
+        {
+          $lookup: {
+            from: "follows",
+            localField: "_id",
+            foreignField: "followerId",
+            as: "Followings",
+          },
         },
-      },
-      {
-        $project: {
-          password: 0,
+        {
+          $project: {
+            password: 0,
+          },
         },
-      },
-    ]).toArray()
+      ])
+      .toArray();
 
-    return data[0]
+    return data[0];
   }
 
   static async createUser(newUser) {

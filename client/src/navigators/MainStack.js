@@ -20,8 +20,11 @@ import PostDetail from "../screens/PostDetail";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import PeoplesProfile from "../screens/OthersProfile";
 
 import { AuthContext } from "../context/AuthContext";
+
+
 
 function StoreScreen({ navigation }) {
   return (
@@ -105,6 +108,7 @@ export default function MainStack() {
             />
             <Stack.Screen name="PostDetail" component={PostDetail} />
             <Stack.Screen name="Store" component={StoreScreen} />
+            <Stack.Screen name="PeoplesProfile" component={PeoplesProfile} />
           </>
         ) : (
           <>

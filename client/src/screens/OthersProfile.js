@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
   View,
   Text,
@@ -6,9 +6,12 @@ import {
   Image,
   Button,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import { GET_USER_BY_ID } from "../queries/GetUserById";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { FOLLOW_USER } from "../mutations/FollowMutation";
+import { GET_CURRENT_LOG_USER } from "../queries/GetUserProfile";
 
 export default function PeoplesProfile({ route }) {
   const { data, loading, error } = useQuery(GET_USER_BY_ID, {
@@ -17,7 +20,17 @@ export default function PeoplesProfile({ route }) {
     },
   });
 
-  if (loading) {
+  const {
+    data: data2,
+    loading: loading2,
+    error: error2,
+  } = useQuery(GET_CURRENT_LOG_USER);
+
+  const [followUser] = useMutation(FOLLOW_USER, {
+    refetchQueries: [GET_USER_BY_ID],
+  });
+
+  if (loading || loading2) {
     return (
       <SafeAreaProvider>
         <SafeAreaView
@@ -34,7 +47,7 @@ export default function PeoplesProfile({ route }) {
     );
   }
 
-  if (error) {
+  if (error || error2) {
     console.log(error);
     return (
       <SafeAreaProvider>
@@ -53,6 +66,16 @@ export default function PeoplesProfile({ route }) {
       </SafeAreaProvider>
     );
   }
+
+  // console.log(data2.findCurrentLogUser._id, "<<<<< data user yang login");
+  // console.log(data.findUserById.Followers, "<<<< data followers target");
+
+  const listTargetFollowers = data.findUserById.Followers;
+  const currentLogUserId = data2.findCurrentLogUser._id;
+
+  const findCurrentLogUserOnTargetFollowerList = listTargetFollowers.find(
+    (obj) => obj.followerId.toString() === currentLogUserId
+  );
 
   return (
     <View style={styles.container}>
@@ -74,7 +97,45 @@ export default function PeoplesProfile({ route }) {
           <Text style={styles.profileDetails.follower}>
             Follower: {data.findUserById.Followers.length}
           </Text>
-          <Button title="Follow" onPress={() => {}} />
+          {findCurrentLogUserOnTargetFollowerList ? (
+            <TouchableOpacity
+              style={{
+                backgroundColor: "black",
+                padding: 10,
+                borderRadius: 5,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => {
+                followUser({
+                  variables: {
+                    followingId: route.params.authorId,
+                  },
+                });
+              }}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>Unfollow</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={{
+                backgroundColor: "red",
+                padding: 10,
+                borderRadius: 5,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => {
+                followUser({
+                  variables: {
+                    followingId: route.params.authorId,
+                  },
+                });
+              }}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>Follow</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
       <View style={styles.postTemplate}>

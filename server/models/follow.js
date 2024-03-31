@@ -89,6 +89,16 @@ class Follow {
       ])
       .toArray();
   }
+
+  static async deleteFollowDataByFollowerId(followerId) {
+    const followCollection = this.collection();
+
+    const result = await followCollection.deleteOne({
+      followerId: new ObjectId(followerId),
+    });
+    // const result = await followCollection.findOne({ followerId });
+    return result;
+  }
 }
 
 module.exports = Follow;

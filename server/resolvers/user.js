@@ -17,7 +17,9 @@ const resolvers = {
     findUserById: async (_, args, contextValue) => {
       //   console.log(args); // id nya didapat dari args
       const decodedToken = await contextValue.authentication();
+
       const user = await User.findById(args._id);
+ 
 
       return user;
       //   return users.find((user) => user.id == args.id);

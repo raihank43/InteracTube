@@ -81,8 +81,16 @@ class Post {
     /**
       VALIDASI dapat dilakukan disini secara manual menggunakan js
     */
+
+    // split tags
+    let tags;
+    if (data.tags) {
+      tags = data.tags.split(" ");
+    }
+
     const result = await postCollection.insertOne({
       ...data,
+      tags: tags || [],
       likes: [],
       comments: [],
       authorId: new ObjectId(data.authorId), // sesuai dengan orang yang lagi login

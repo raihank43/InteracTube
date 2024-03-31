@@ -29,7 +29,7 @@ type Like {
 
 input NewPost {
     content: String!
-    tags: [String]
+    tags: String
     imgUrl: String
 }
 

@@ -15,6 +15,7 @@ import { ADD_POST } from "../mutations/AddPostMutation";
 export default function CreatePostScreen({ navigation }) {
   const [content, setContent] = useState("");
   const [imgUrl, setImgUrl] = useState("");
+  const [tags, setTags] = useState("")
 
   const [addPost, { data, loading, error }] = useMutation(ADD_POST, {
     refetchQueries: [GET_POSTS],
@@ -39,6 +40,12 @@ export default function CreatePostScreen({ navigation }) {
         onChangeText={setContent}
       />
       <TextInput
+        placeholder="Put some Tags"
+        style={styles.textInputUrl}
+        value={tags}
+        onChangeText={setTags}
+      />
+      <TextInput
         placeholder="Insert Image Url..."
         style={styles.textInputUrl}
         value={imgUrl}
@@ -52,7 +59,7 @@ export default function CreatePostScreen({ navigation }) {
               newPost: {
                 content: content,
                 imgUrl: imgUrl,
-                tags: [],
+                tags: tags,
               },
             },
           });

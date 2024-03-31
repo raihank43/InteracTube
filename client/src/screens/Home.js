@@ -41,6 +41,7 @@ export default function HomeScreen({ navigation }) {
   }
 
   if (error) {
+    console.log(error)
     return (
       <SafeAreaProvider>
         <SafeAreaView

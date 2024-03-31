@@ -42,6 +42,8 @@ const resolvers = {
       // menggunakan context dan authentication kita bisa mengirim authorId yang membuat post
       const decodedToken = await contextValue.authentication(); // untuk memanggil authentication di context
 
+      // console.log(args)
+
       // invalidate cache
       // jika berhasil melakukan create data/ delete data/update data ->
       const newPost = args.newPost;
@@ -51,7 +53,7 @@ const resolvers = {
         // authorId: "66019641aaddd7ef336278d8",
       });
 
-      // hapus cachenya
+      // // hapus cachenya
       await redis.del("posts");
       return result;
     },
@@ -65,9 +67,7 @@ const resolvers = {
       newLike.username = likerUsername;
       const result = await Post.likePost(newLike);
 
-
       // console.log(decodedToken)
-      
 
       await redis.del("posts");
       return result;

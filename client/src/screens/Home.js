@@ -68,23 +68,6 @@ export default function HomeScreen({ navigation }) {
         renderItem={({ item }) => <PostItem Post={item} />}
         keyExtractor={(item) => item._id}
       />
-
-      {/* <Button
-        title="Go to Details"
-        onPress={() => {
-          navigation.navigate("Details", {
-            id: 100,
-            type: "t-shirt",
-          });
-        }}
-      /> */}
-
-      {/* <Button
-        title="Go to Details Push"
-        onPress={() => {
-          navigation.push("Details");
-        }}
-      /> */}
     </View>
   );
 }

@@ -1,9 +1,8 @@
 import { useQuery, gql } from "@apollo/client";
 
-
 // querynya di copy dari apollo sandbox
 export const GET_POSTS = gql`
-  query findAllPost {
+  query FindAllPost {
     findAllPost {
       _id
       content

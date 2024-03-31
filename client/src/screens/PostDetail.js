@@ -72,7 +72,6 @@ export default function PostDetail({ navigation, route }) {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <Text style={{ color: "white" }}>INI ID NYA: {_id}</Text>
         <Text style={styles.author}>{data.findPostById.author.name}</Text>
         {data.findPostById.imgUrl ? (
           <Image style={styles.image} src={data.findPostById.imgUrl} />

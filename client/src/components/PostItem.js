@@ -1,10 +1,18 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
-import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LIKE_POST } from "../mutations/LikePostMutation";
 import { GET_POSTS } from "../queries/GetPostQuery";
 import { GET_CURRENT_LOG_USER } from "../queries/GetUserProfile";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function PostItem({ Post }) {
   const navigation = useNavigation();
@@ -52,7 +60,6 @@ export default function PostItem({ Post }) {
       </SafeAreaProvider>
     );
   }
-
   // console.log(Post.likes[0]?.username, "<<<<<");
 
   const listPostLikes = Post.likes;
@@ -76,6 +83,10 @@ export default function PostItem({ Post }) {
         }}
       >
         <View style={styles.PostHeader}>
+          <Image
+            style={styles.ProfileImage}
+            src="https://th.bing.com/th/id/OIP.WBjdfpIWhgt8n8WkzhOpJwHaKX?rs=1&pid=ImgDetMain"
+          />
           <Text style={styles.PostHeader.AuthorName}> {Post.author.name}</Text>
         </View>
       </TouchableOpacity>
@@ -86,8 +97,18 @@ export default function PostItem({ Post }) {
         ) : (
           ""
         )}
-
         <Text style={styles.PostContent}>{Post.content}</Text>
+
+        <View style={styles.PostTags}>
+          {Post.tags.map((el, index) => {
+            return (
+              <View style={styles.PostTags.PerTags} key={index}>
+                <FontAwesome name="tags" size={20} color="red" />
+                <Text style={styles.PostTags.PostTagsText}>{el}</Text>
+              </View>
+            );
+          })}
+        </View>
       </View>
 
       <View style={styles.PostFooter}>
@@ -130,7 +151,12 @@ const styles = StyleSheet.create({
     flex: 1,
     // marginTop: StatusBar.currentHeight || 0,
   },
-
+  ProfileImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
+  },
   PostItem: {
     borderRadius: 10,
     width: "100%",
@@ -142,6 +168,9 @@ const styles = StyleSheet.create({
   },
 
   PostHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 15,
     AuthorName: {
       fontWeight: "bold",
       fontSize: 24,
@@ -159,12 +188,24 @@ const styles = StyleSheet.create({
     },
   },
 
+  PostTags: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 30,
+    marginTop: 20,
+    marginLeft: 10,
+    PerTags: {
+      flexDirection: "row",
+      gap: 10
+    }
+  },
+
   PostContent: {
     fontSize: 16,
   },
 
   PostFooter: {
-    marginTop: 30,
+    marginTop: 20,
     flexDirection: "row",
     justifyContent: "space-around",
     footerItem: {

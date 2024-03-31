@@ -48,8 +48,6 @@ export default function Profile() {
     );
   }
 
-  console.log(data);
-
   const user = {
     profileImage:
       "https://th.bing.com/th/id/OIP.WBjdfpIWhgt8n8WkzhOpJwHaKX?rs=1&pid=ImgDetMain",

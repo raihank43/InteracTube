@@ -9,10 +9,38 @@ class User {
     return database.collection("users");
   }
 
-  static async findAll() {
+  static async findAll(searchTerm) {
     const userCollection = this.collection();
-    const data = await userCollection.find({}).toArray();
-
+    const data = await userCollection
+      .aggregate([
+        {
+          $match: {
+            name: { $regex: new RegExp(searchTerm, "i") },
+          },
+        },
+        {
+          $lookup: {
+            from: "follows",
+            localField: "_id",
+            foreignField: "followingId",
+            as: "Followers",
+          },
+        },
+        {
+          $lookup: {
+            from: "follows",
+            localField: "_id",
+            foreignField: "followerId",
+            as: "Followings",
+          },
+        },
+        {
+          $project: {
+            password: 0,
+          },
+        },
+      ])
+      .toArray();
     return data;
   }
 
@@ -48,7 +76,7 @@ class User {
         },
       ])
       .toArray();
-    return data[0]
+    return data[0];
   }
 
   static async findByEmail(email) {

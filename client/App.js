@@ -18,10 +18,12 @@ import { AuthContext } from "./src/context/AuthContext";
 import MainStack from "./src/navigators/MainStack";
 import { ApolloProvider } from "@apollo/client";
 import client from "./src/config/apolloClient";
+import { SearchUserContext } from "./src/context/SearchUserContext";
 
 export default function App() {
   //? ini ngirim state sign in saat ini ke context
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   //**FLOW SIMPAN,GET,DAN REMOVE PADA LOGIN DAN LOGOUT */
   //? FLOW SIMPAN TOKEN
@@ -49,11 +51,13 @@ export default function App() {
   return (
     // Authentication
     <AuthContext.Provider value={{ isSignedIn, setIsSignedIn }}>
-      {/* /* Apollo provider in client */}
-      <ApolloProvider client={client}>
-        {/* Stacks */}
-        <MainStack />
-      </ApolloProvider>
+      <SearchUserContext.Provider value={{ searchText, setSearchText }}>
+        {/* /* Apollo provider in client */}
+        <ApolloProvider client={client}>
+          {/* Stacks */}
+          <MainStack />
+        </ApolloProvider>
+      </SearchUserContext.Provider>
     </AuthContext.Provider>
   );
 }

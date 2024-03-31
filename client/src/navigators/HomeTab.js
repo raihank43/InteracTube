@@ -1,4 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+// import HeaderButton from "../components/HeaderButton";
+
 import HomeScreen from "../screens/Home";
 import LogoutScreen from "../screens/LogoutScreen";
 import CreatePostScreen from "../screens/CreatePost";
@@ -7,6 +10,10 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import Profile from "../screens/Profile";
+import { FontAwesome } from "@expo/vector-icons";
+import SearchScreen from "../screens/SearchScreen";
+import { View, Text } from "react-native";
+
 
 const Tab = createBottomTabNavigator();
 export default function HomeTab({ navigation }) {
@@ -14,6 +21,18 @@ export default function HomeTab({ navigation }) {
     <Tab.Navigator
       screenOptions={({ route }) => {
         return {
+          headerRight: () => (
+            <HeaderButtons>
+              <FontAwesome
+                name="search"
+                size={24}
+                color="black"
+                onPress={() => {
+                  navigation.navigate("SearchUser");
+                }}
+              />
+            </HeaderButtons>
+          ),
           headerStyle: {
             backgroundColor: "#ff1b1cff",
           },

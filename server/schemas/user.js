@@ -41,7 +41,7 @@ const typeDefs = `#graphql
 
   # Query ->  untuk bikin R
   type Query {
-    findAllUsers: [User]
+    findAllUsers(searchTerm: String!): [User]
     findUserById(_id: ID!): User
     findUserByUsername(username: String!): User
     findCurrentLogUser: User

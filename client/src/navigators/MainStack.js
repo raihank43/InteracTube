@@ -23,72 +23,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import PeoplesProfile from "../screens/OthersProfile";
 
 import { AuthContext } from "../context/AuthContext";
-
-
-
-function StoreScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Details Screen</Text>
-
-      <Button
-        title="Go to Details"
-        onPress={() => {
-          navigation.navigate("Details");
-        }}
-      />
-
-      <Button
-        title="Go to Details Push"
-        onPress={() => {
-          navigation.push("Details", {
-            id: 90,
-            type: "dress",
-          });
-        }}
-      />
-
-      <Button
-        title="Go to Back"
-        onPress={() => {
-          navigation.goBack();
-        }}
-      />
-    </View>
-  );
-}
-
-// function SettingsScreen({ navigation }) {
-//   return (
-//     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-//       <Text>Settings Screen</Text>
-
-//       <Button
-//         title="Go to Details"
-//         onPress={() => {
-//           navigation.navigate("Details");
-//         }}
-//       />
-
-//       <Button
-//         title="Go to Details Push"
-//         onPress={() => {
-//           navigation.push("Details", {
-//             id: 90,
-//             type: "dress",
-//           });
-//         }}
-//       />
-
-//       <Button
-//         title="Go to Back"
-//         onPress={() => {
-//           navigation.goBack();
-//         }}
-//       />
-//     </View>
-//   );
-// }
+import SearchScreen from "../screens/SearchScreen";
+import SearchBarUser from "../components/SearchBarUser";
 
 const Stack = createNativeStackNavigator();
 export default function MainStack() {
@@ -107,8 +43,18 @@ export default function MainStack() {
               component={HomeTab}
             />
             <Stack.Screen name="PostDetail" component={PostDetail} />
-            <Stack.Screen name="Store" component={StoreScreen} />
             <Stack.Screen name="PeoplesProfile" component={PeoplesProfile} />
+            <Stack.Screen
+              name="SearchUser"
+              component={SearchScreen}
+              options={{
+                headerTitle: () => (
+                  <View>
+                    <SearchBarUser />
+                  </View>
+                ),
+              }}
+            />
           </>
         ) : (
           <>

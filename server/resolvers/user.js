@@ -8,9 +8,11 @@ const resolvers = {
   Query: {
     findAllUsers: async (_, args, contextValue) => {
       const decodedToken = await contextValue.authentication();
+      const { searchTerm } = args;
 
       // implementasi bagaimana cara mendapatkan datanya
-      const users = await User.findAll();
+      const users = await User.findAll(searchTerm);
+      // console.log(users)
       return users;
     },
 
@@ -19,7 +21,6 @@ const resolvers = {
       const decodedToken = await contextValue.authentication();
 
       const user = await User.findById(args._id);
- 
 
       return user;
       //   return users.find((user) => user.id == args.id);

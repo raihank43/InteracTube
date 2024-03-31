@@ -9,6 +9,7 @@ export const GET_POSTS = gql`
       tags
       imgUrl
       authorId
+      createdAt
       comments {
         content
         username

@@ -5,18 +5,9 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Alert,
-  ScrollView,
-  FlatList,
-  TouchableHighlight,
-  TouchableNativeFeedback,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
-import {
-  SafeAreaView,
-  SafeAreaProvider,
-  SafeAreaInsetsContext,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
 import { gql, useMutation } from "@apollo/client";
 import { GET_POSTS } from "../queries/GetPostQuery";
 import { ADD_POST } from "../mutations/AddPostMutation";
@@ -29,98 +20,84 @@ export default function CreatePostScreen({ navigation }) {
     refetchQueries: [GET_POSTS],
     onCompleted: () => {
       // pindah halaman
-      navigation.navigate("Home")
-    }
+      navigation.navigate("Home");
+    },
   });
 
-  // console.log(data, loading, error);
-
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Create new Post</Text>
-        <Text style={{ color: "white", fontWeight: "bold" }}>
-          Share what you think
-        </Text>
-        <Text style={styles.text}>{}</Text>
-        <View style={styles.form}>
-          <TextInput
-            placeholder="What's happening?"
-            style={styles.textInputForm}
-            value={content}
-            onChangeText={setContent}
-          ></TextInput>
-
-          <TextInput
-            placeholder="Insert Image Url..."
-            style={styles.textInputForm}
-            value={imgUrl}
-            onChangeText={setImgUrl}
-          ></TextInput>
-        </View>
-        <TouchableOpacity
-          style={styles.Post}
-          onPress={() => {
-            addPost({
-              variables: {
-                newPost: {
-                  content: content,
-                  imgUrl: imgUrl,
-                  tags: [],
-                },
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <Text style={styles.title}>Create new Post</Text>
+      <TextInput
+        placeholder="What's happening?"
+        style={styles.textInputContent}
+        value={content}
+        multiline
+        numberOfLines={4}
+        onChangeText={setContent}
+      />
+      <TextInput
+        placeholder="Insert Image Url..."
+        style={styles.textInputUrl}
+        value={imgUrl}
+        onChangeText={setImgUrl}
+      />
+      <TouchableOpacity
+        style={styles.buttonSubmit}
+        onPress={() => {
+          addPost({
+            variables: {
+              newPost: {
+                content: content,
+                imgUrl: imgUrl,
+                tags: [],
               },
-            });
-          }}
-        >
-          <Text style={styles.submitText}>SUBMIT</Text>
-        </TouchableOpacity>
-
-        {/* <StatusBar style="auto" /> */}
-      </SafeAreaView>
-    </SafeAreaProvider>
+            },
+          });
+        }}
+      >
+        <Text style={styles.submitText}>SUBMIT</Text>
+      </TouchableOpacity>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: "#262626ff",
   },
-
   title: {
     fontWeight: "bold",
-    fontSize: 50,
+    fontSize: 24,
     color: "white",
     textAlign: "center",
+    marginBottom: 10,
   },
-
-  Post: {
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 5,
-    width: 300,
-    height: 50,
-    marginTop: 20,
-    justifyContent: "center",
-  },
-
-  submitText: {
-    color: "white",
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-
-  form: {
-    gap: 20,
-  },
-
-  textInputForm: {
+  textInputContent: {
+    flex: 1,
     padding: 10,
     borderRadius: 5,
     backgroundColor: "white",
-    width: 300,
-    borderWidth: 1,
+    marginBottom: 10,
+    fontSize: 50,
+  },
+  textInputUrl: {
+    padding: 10,
+    // borderRadius: 5,
+    backgroundColor: "white",
+  },
+  buttonSubmit: {
+    backgroundColor: "red",
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 50
+  },
+  submitText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });

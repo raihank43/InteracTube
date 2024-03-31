@@ -12,6 +12,7 @@ type Follow {
 type FollowDetail {
     _id: ID
     name: String
+    username: String
     email: String
 }
 

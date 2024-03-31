@@ -9,6 +9,7 @@ import {
   FlatList,
   TextInput,
   Button,
+  ScrollView,
 } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { GET_POST_BY_ID } from "../queries/GetPostDetail";
@@ -72,29 +73,41 @@ export default function PostDetail({ navigation, route }) {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.author}>{data.findPostById.author.name}</Text>
-        {data.findPostById.imgUrl ? (
-          <Image style={styles.image} src={data.findPostById.imgUrl} />
-        ) : (
-          ""
-        )}
-
-        <Text style={styles.content}>{data.findPostById.content}</Text>
-        <View style={styles.footer}>
-          <TouchableOpacity style={styles.likeButton}>
-            <FontAwesome name="thumbs-up" size={24} color="red" />
-            <Text style={styles.likeCount}>
-              {data.findPostById.likes.length}
-            </Text>
-          </TouchableOpacity>
-          <View style={styles.comments}>
-            <FlatList
-              data={data.findPostById.comments}
-              renderItem={({ item }) => <PostComment PostComment={item} />}
-              keyExtractor={(item) => item._id}
+        <ScrollView>
+          <View style={styles.PostProfile}>
+            <Image
+              style={styles.ProfileImage}
+              source={{
+                uri: "https://th.bing.com/th/id/OIP.WBjdfpIWhgt8n8WkzhOpJwHaKX?rs=1&pid=ImgDetMain",
+              }}
             />
+            <Text style={styles.author}>{data.findPostById.author.name}</Text>
           </View>
-        </View>
+          {data.findPostById.imgUrl ? (
+            <Image
+              style={styles.image}
+              source={{ uri: data.findPostById.imgUrl }}
+            />
+          ) : null}
+
+          <Text style={styles.content}>{data.findPostById.content}</Text>
+          <View style={styles.footer}>
+            <TouchableOpacity style={styles.likeButton}>
+              <FontAwesome name="thumbs-up" size={24} color="red" />
+              <Text style={styles.likeCount}>
+                {data.findPostById.likes.length}
+              </Text>
+            </TouchableOpacity>
+            <View style={styles.comments}>
+              <FlatList
+                nestedScrollEnabled
+                data={data.findPostById.comments}
+                renderItem={({ item }) => <PostComment PostComment={item} />}
+                keyExtractor={(item) => item._id}
+              />
+            </View>
+          </View>
+        </ScrollView>
         <View style={styles.commentBox}>
           <TextInput
             style={styles.input}
@@ -130,19 +143,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#262626ff",
     padding: 10,
   },
+  PostProfile: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
   author: {
     color: "white",
     fontWeight: "bold",
     fontSize: 18,
+    marginLeft: 10,
   },
   image: {
     width: "100%",
     height: 200,
+    borderRadius: 10,
     marginTop: 10,
   },
   content: {
     color: "white",
     marginTop: 10,
+    fontSize: 16,
   },
   footer: {
     marginTop: 10,
@@ -150,6 +171,7 @@ const styles = StyleSheet.create({
   likeButton: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 10,
   },
   likeCount: {
     color: "red",
@@ -158,18 +180,13 @@ const styles = StyleSheet.create({
   comments: {
     marginTop: 10,
   },
-  comment: {
-    color: "white",
-  },
   commentBox: {
-    backgroundColor: "#262626ff",
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 10,
-    position: "absolute",
-    bottom: 0,
-    left: 10,
+    backgroundColor: "#fff",
     padding: 10,
+    borderTopColor: "#ccc",
+    borderTopWidth: 1,
   },
   input: {
     flex: 1,
@@ -177,10 +194,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
     padding: 10,
-    color: "black",
-    backgroundColor: "white",
+    marginRight: 10,
   },
-  sendButton: {
-    marginLeft: 10,
+  sendButton: {},
+  ProfileImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
 });

@@ -13,6 +13,7 @@ import { LIKE_POST } from "../mutations/LikePostMutation";
 import { GET_POSTS } from "../queries/GetPostQuery";
 import { GET_CURRENT_LOG_USER } from "../queries/GetUserProfile";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import timeSincePosted from "../utils/getTimeSincePosted";
 
 export default function PostItem({ Post }) {
   const navigation = useNavigation();
@@ -87,7 +88,12 @@ export default function PostItem({ Post }) {
             style={styles.ProfileImage}
             src="https://th.bing.com/th/id/OIP.WBjdfpIWhgt8n8WkzhOpJwHaKX?rs=1&pid=ImgDetMain"
           />
-          <Text style={styles.PostHeader.AuthorName}> {Post.author.name}</Text>
+          <View style={{marginLeft:5}}>
+            <Text style={styles.PostHeader.AuthorName}>
+              {Post.author.name}
+            </Text>
+            <Text style={styles.PostHeader.Time}>{timeSincePosted(Post.createdAt)}</Text>
+          </View>
         </View>
       </TouchableOpacity>
 
@@ -172,9 +178,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 15,
     AuthorName: {
+      margin: 0,
       fontWeight: "bold",
       fontSize: 24,
     },
+    Time: {
+      color: "gray",
+    }
   },
 
   PostBody: {
@@ -196,8 +206,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     PerTags: {
       flexDirection: "row",
-      gap: 10
-    }
+      gap: 10,
+    },
   },
 
   PostContent: {

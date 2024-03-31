@@ -8,6 +8,7 @@ type Post {
     comments: [Comment]
     likes: [Like]
     author: Author
+    createdAt: String
 }
 
 type Author {

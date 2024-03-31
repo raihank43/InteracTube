@@ -12,11 +12,13 @@ export const GET_FOLLOWING_DETAIL = gql`
         _id
         name
         email
+        username
       }
       following {
         _id
         name
         email
+        username
       }
     }
   }

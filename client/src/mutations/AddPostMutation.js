@@ -5,6 +5,7 @@ export const ADD_POST = gql`
     createPost(newPost: $newPost) {
       _id
       content
+      tags
       imgUrl
       authorId
     }

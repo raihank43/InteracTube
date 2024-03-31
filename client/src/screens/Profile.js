@@ -1,5 +1,14 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, Button } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+  Touchable,
+  FlatList,
+} from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
 import { GET_CURRENT_LOG_USER } from "../queries/GetUserProfile";
@@ -8,11 +17,34 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator } from "react-native";
 import { GET_FOLLOWING_DETAIL } from "../queries/GetFollowingDetail";
 import { GET_FOLLOWER_DETAIL } from "../queries/GetFollowerDetail";
+import FollowerProfileCard from "../components/FollowerProfileCard";
+import FollowingProfileCard from "../components/FollowingProfileCard";
 
 export default function Profile() {
   const { data, loading, error } = useQuery(GET_CURRENT_LOG_USER);
+  const {
+    data: data2,
+    loading: loading2,
+    error: error2,
+  } = useQuery(GET_FOLLOWER_DETAIL, {
+    variables: {
+      id: data.findCurrentLogUser._id,
+    },
+  });
 
-  if (loading) {
+  const {
+    data: data3,
+    loading: loading3,
+    error: error3,
+  } = useQuery(GET_FOLLOWING_DETAIL, {
+    variables: {
+      id: data.findCurrentLogUser._id,
+    },
+  });
+
+  const [tab, setTab] = useState("Posts");
+
+  if (loading || loading2 || loading3) {
     return (
       <SafeAreaProvider>
         <SafeAreaView
@@ -29,7 +61,7 @@ export default function Profile() {
     );
   }
 
-  if (error) {
+  if (error || error2 || error3) {
     return (
       <SafeAreaProvider>
         <SafeAreaView
@@ -76,10 +108,59 @@ export default function Profile() {
           {/* <Button title="Follow" onPress={() => {}} /> */}
         </View>
       </View>
-      <View style={styles.postTemplate}>
-        <Text style={styles.postTitle}>Judul Post</Text>
-        <Text style={styles.postContent}>Isi post...</Text>
+
+      <View style={styles.TabsContainer}>
+        <View style={styles.tabs}>
+          <TouchableOpacity
+            style={tab === "Posts" ? styles.activeTab : styles.inactiveTab}
+            onPress={() => setTab("Posts")}
+          >
+            <Text style={styles.TabText}>Posts</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            title="Followers"
+            onPress={() => setTab("Followers")}
+            style={tab === "Followers" ? styles.activeTab : styles.inactiveTab}
+          >
+            <Text style={styles.TabText}>Followers</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            title="Followings"
+            onPress={() => setTab("Followings")}
+            style={tab === "Followings" ? styles.activeTab : styles.inactiveTab}
+          >
+            <Text style={styles.TabText}>Followings</Text>
+          </TouchableOpacity>
+        </View>
       </View>
+
+      {tab === "Posts" && (
+        <View style={styles.TabContentBody}>
+          <View style={styles.postTemplate}>
+            <Text style={styles.postTitle}>Judul Post</Text>
+            <Text style={styles.postContent}>Isi post...</Text>
+          </View>
+          <Text>This is the Posts tab</Text>
+        </View>
+      )}
+      {tab === "Followers" && (
+        <View style={styles.TabContentBody}>
+          <FlatList
+            data={data2.findFollowerDetail}
+            renderItem={({ item }) => <FollowerProfileCard Users={item} />}
+            keyExtractor={(item) => item._id}
+          />
+        </View>
+      )}
+      {tab === "Followings" && (
+        <View style={styles.TabContentBody}>
+          <FlatList
+            data={data3.findFollowingDetail}
+            renderItem={({ item }) => <FollowingProfileCard Users={item} />}
+            keyExtractor={(item) => item._id}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -118,6 +199,20 @@ const styles = StyleSheet.create({
     width: "60%",
   },
 
+  TabsContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  tabs: {
+    flexDirection: "row",
+    borderTopEndRadius: 10,
+    borderTopLeftRadius: 10,
+    justifyContent: "center",
+    width: "100%",
+    backgroundColor: "white",
+  },
+
   postTemplate: {
     backgroundColor: "#f0f0f0",
     padding: 10,
@@ -129,5 +224,23 @@ const styles = StyleSheet.create({
   },
   postContent: {
     marginTop: 10,
+  },
+  TabContentBody: {
+    backgroundColor: "#E2E8CE",
+  },
+  activeTab: {
+    backgroundColor: "#E2E8CE", // ganti dengan warna yang Anda inginkan
+    padding: 20,
+    marginTop: 10,
+    borderTopEndRadius: 10,
+    borderTopLeftRadius: 10,
+  },
+  inactiveTab: {
+    marginTop: 10,
+    backgroundColor: "white", // ganti dengan warna yang Anda inginkan
+    padding: 20,
+  },
+  TabText: {
+    fontWeight: "bold",
   },
 });

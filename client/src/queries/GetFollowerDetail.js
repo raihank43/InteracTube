@@ -12,11 +12,13 @@ export const GET_FOLLOWER_DETAIL = gql`
         _id
         name
         email
+        username
       }
       follower {
         _id
         name
         email
+        username
       }
     }
   }

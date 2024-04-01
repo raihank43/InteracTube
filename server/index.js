@@ -1,4 +1,6 @@
-require("dotenv").config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
@@ -30,7 +32,7 @@ const { url } = startStandaloneServer(server, {
       authentication: () => {
         // cek dari req.headers, ada gak headers Authorization
         // -> melakukan decode token, dan memastikan tokennya valid
-        
+
         if (!req.headers.authorization) {
           throw new GraphQLError("access token must be provided.", {
             extensions: {

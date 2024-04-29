@@ -104,6 +104,7 @@ export default function PostDetail({ navigation, route }) {
                 data={data.findPostById.comments}
                 renderItem={({ item }) => <PostComment PostComment={item} />}
                 keyExtractor={(item) => item._id}
+                key={item => item._id}
               />
             </View>
           </View>

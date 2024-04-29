@@ -9,7 +9,7 @@ import { setContext } from "@apollo/client/link/context";
 import * as SecureStore from "expo-secure-store";
 
 const httpLink = createHttpLink({
-  uri: "https://3ca0-120-188-7-55.ngrok-free.app/", // dimasukkan uri server
+  uri: "https://hacktube.raihankusuma.tech/", // dimasukkan uri server
 });
 
 const authLink = setContext(async (_, context) => {

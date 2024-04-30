@@ -4,7 +4,7 @@
     <img src="assets/logoTransparent.png" alt="Image Description">
 </div>
 
-InteracTube adalah sebuah aplikasi client(mobile)-server. Challenge ini juga merupakan salah satu aplikasi mobile pertama dan terakhir kamu, jadi kerjakan dengan baik sebagai bekal portofolio kamu. Pada challenge ini, kamu diminta untuk membuat aplikasi client(mobile)-server dengan detail sebagai berikut:
+InteracTube adalah sebuah aplikasi client(mobile)-server. Dimana menjadi sebuah pembelajaran bagi saya untuk membuat aplikasi mobile menggunakan React Native sebagai framework utamanya. Aplikasi ini menawarkan banyak fitur yang ditemukan pada sosial media pada umumnya, seperti memposting content, memberikan like pada suatu post, memberikan comment pada suatu post, memfollow pengguna yang lain, dan mencari pengguna lain.
 
 # Tech Stacks
 - React Native, Redis, Expo, GraphQL, Apollo Server, Apollo Client, MongoDB

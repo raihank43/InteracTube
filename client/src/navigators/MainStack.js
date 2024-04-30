@@ -59,7 +59,13 @@ export default function MainStack() {
         ) : (
           <>
             <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{
+                headerShown: false,
+              }}
+            />
           </>
         )}
         {/* Describe the registered screen  */}

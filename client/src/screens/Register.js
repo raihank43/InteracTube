@@ -59,10 +59,16 @@ export default function Register({ navigation }) {
   };
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <Text className="text-white text-5xl font-bold">asdasdasdasd</Text>
-        <Text style={styles.title}>Welcome to HackTube</Text>
+    <SafeAreaProvider className="bg-gray-900">
+      <ScrollView contentContainerStyle={styles.container}>
+
+        <StatusBar style="light" />
+   
+        <Text className="text-3xl pt-6 font-poppins-bold text-center text-white">Welcome to InteracTube</Text>
+        <Image
+          source={require("../assets/logoApp-removebg-preview.png")}
+          className="w-36 h-36 "
+        />
 
         <Text style={{ color: "white", fontWeight: "bold" }}>
           Silahkan Register.
@@ -138,18 +144,16 @@ export default function Register({ navigation }) {
         </Text>
 
         {/* <StatusBar style="auto" /> */}
-      </SafeAreaView>
+      </ScrollView>
     </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "black",
+    backgroundColor: "rgb(15 23 42)",
   },
 
   // loginPage: {

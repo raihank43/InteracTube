@@ -9,6 +9,7 @@ import {
   Alert,
   ScrollView,
   FlatList,
+  Image,
 } from "react-native";
 import {
   SafeAreaView,
@@ -19,6 +20,12 @@ import {
 import { REGISTER_MUTATION } from "../mutations/RegisterMutation";
 import { useMutation } from "@apollo/client";
 import ToastManager, { Toast } from "toastify-react-native";
+import { styled } from "nativewind";
+import {
+  MaterialCommunityIcons,
+  FontAwesome,
+  MaterialIcons,
+} from "@expo/vector-icons";
 
 export default function Register({ navigation }) {
   const [registerData, setRegisterData] = useState({
@@ -27,6 +34,7 @@ export default function Register({ navigation }) {
     email: "",
     password: "",
   });
+  const StyledView = styled(View);
   const [registerUser, { data, loading, error }] = useMutation(
     REGISTER_MUTATION,
     {
@@ -58,95 +66,124 @@ export default function Register({ navigation }) {
   };
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Welcome to HackTube</Text>
-        <Text style={{ color: "white", fontWeight: "bold" }}>
-          Silahkan Register.
-        </Text>
-        {/* <Text style={styles.text}>{text}</Text> */}
-        <View style={styles.form}>
-          <TextInput
-            placeholder="Username"
-            style={styles.textInputForm}
-            value={registerData.username}
-            onChangeText={(value) => {
-              handleChangeInput("username", value);
-            }}
-          ></TextInput>
-
-          <TextInput
-            placeholder="Name"
-            style={styles.textInputForm}
-            value={registerData.name}
-            onChangeText={(value) => {
-              handleChangeInput("name", value);
-            }}
-          ></TextInput>
-
-          <TextInput
-            placeholder="Email"
-            style={styles.textInputForm}
-            value={registerData.email}
-            onChangeText={(value) => {
-              handleChangeInput("email", value);
-            }}
-          ></TextInput>
-
-          <TextInput
-            placeholder="Password"
-            secureTextEntry
-            style={styles.textInputForm}
-            value={registerData.password}
-            onChangeText={(value) => {
-              handleChangeInput("password", value);
-            }}
-          ></TextInput>
+    <SafeAreaProvider className="bg-gray-900">
+      <ScrollView contentContainerStyle={styles.container}>
+        <StatusBar style="light" />
+        <View className="w-full items-center">
+          <Image
+            source={require("../assets/logoTransparent.png")}
+            className="w-60 h-60"
+          />
         </View>
-        <ToastManager width={300} />
-        <TouchableOpacity
-          style={styles.login}
-          onPress={() => {
-            registerUser({
-              variables: {
-                newUser: {
-                  email: registerData.email,
-                  name: registerData.name,
-                  password: registerData.password,
-                  username: registerData.username,
-                },
-              },
-            });
-          }}
-        >
-          <Text style={styles.loginText}>REGISTER</Text>
-        </TouchableOpacity>
 
-        <Text style={{ color: "white", marginTop: 20, fontSize: 15 }}>
-          Sudah Punya Akun? Silahkan{" "}
-          <Text
+        <ToastManager width={300} />
+
+        <View className="bg-white p-6 w-full rounded-t-3xl">
+          <Text className="text-red-700 rounded self-start font-poppins-bold mb-6 text-xl">
+            Create Your Account
+          </Text>
+          {/* <Text style={styles.text}>{text}</Text> */}
+          <View className="gap-3">
+            <View className="flex flex-row items-center border-b-2 border-black">
+              <FontAwesome name="user-circle" size={24} color="black" />
+              <TextInput
+                placeholder="Username"
+                className=" p-3 w-64 text-black font-poppins-regular"
+                value={registerData.username}
+                onChangeText={(value) => {
+                  handleChangeInput("username", value);
+                }}
+              ></TextInput>
+            </View>
+
+            <View className="flex flex-row items-center border-b-2 border-black">
+              <MaterialCommunityIcons name="account" size={24} color="black" />
+              <TextInput
+                placeholder="Name"
+                className=" p-3 w-64 text-black font-poppins-regular"
+                value={registerData.name}
+                onChangeText={(value) => {
+                  handleChangeInput("name", value);
+                }}
+              ></TextInput>
+            </View>
+
+            <View className="flex flex-row items-center border-b-2 border-black">
+              <MaterialIcons name="email" size={24} color="black" />
+              <TextInput
+                placeholder="Email"
+                className=" p-3 w-64 text-black font-poppins-regular"
+                value={registerData.email}
+                onChangeText={(value) => {
+                  handleChangeInput("email", value);
+                }}
+              ></TextInput>
+            </View>
+
+            <View className="flex flex-row items-center border-b-2 border-black">
+              <MaterialIcons name="password" size={24} color="black" />
+              <TextInput
+                placeholder="Password"
+                secureTextEntry
+                className=" p-3 w-64 text-black font-poppins-regular"
+                value={registerData.password}
+                onChangeText={(value) => {
+                  handleChangeInput("password", value);
+                }}
+              ></TextInput>
+            </View>
+          </View>
+
+          <TouchableOpacity
+            className="rounded-2xl p-4 mt-6 w-full text-white font-poppins-bold"
+            style={{ backgroundColor: "red" }}
+            onPress={() => {
+              registerUser({
+                variables: {
+                  newUser: {
+                    email: registerData.email,
+                    name: registerData.name,
+                    password: registerData.password,
+                    username: registerData.username,
+                  },
+                },
+              });
+            }}
+          >
+            <Text style={styles.loginText}>REGISTER</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
             onPress={() => {
               navigation.navigate("Login");
             }}
-            style={{ color: "red", fontWeight: "bold" }}
           >
-            Login
-          </Text>
-        </Text>
+            <Text className="text-black text-center mt-3 text-sm font-poppins-regular">
+              Sudah Punya Akun? Silahkan{" "}
+              <Text
+                onPress={() => {
+                  navigation.navigate("Login");
+                }}
+                style={{ color: "red", fontWeight: "bold" }}
+              >
+                Login
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
 
         {/* <StatusBar style="auto" /> */}
-      </SafeAreaView>
+      </ScrollView>
     </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "black",
+    backgroundColor: "rgb(15 23 42)",
+    minHeight: "100vh",
   },
 
   // loginPage: {

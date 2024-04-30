@@ -9,6 +9,7 @@ import {
   Alert,
   ScrollView,
   FlatList,
+  Image,
 } from "react-native";
 import {
   SafeAreaView,
@@ -60,7 +61,9 @@ export default function Register({ navigation }) {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
+        <Text className="text-white text-5xl font-bold">asdasdasdasd</Text>
         <Text style={styles.title}>Welcome to HackTube</Text>
+
         <Text style={{ color: "white", fontWeight: "bold" }}>
           Silahkan Register.
         </Text>

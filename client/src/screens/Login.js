@@ -12,6 +12,7 @@ import {
   TouchableHighlight,
   TouchableNativeFeedback,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import {
   SafeAreaView,
@@ -30,10 +31,12 @@ import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 export default function Login({ navigation }) {
   const [text, setText] = useState("");
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
 
   const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION, {
     onError: (error) => {
+      console.log(error.message);
       Toast.error(error.message);
     },
   });
@@ -43,7 +46,6 @@ export default function Login({ navigation }) {
     <SafeAreaProvider className="bg-gray-900 border-none">
       <ScrollView contentContainerStyle={styles.container}>
         <StatusBar style="black" />
-        <ToastManager width={300} />
 
         <View
           className="border-none items-center pt-10 bg-white w-full pb-10"
@@ -60,6 +62,8 @@ export default function Login({ navigation }) {
             className="w-full h-32"
           />
         </View>
+
+        <ToastManager width={300} />
 
         <View
           id="login-card"
@@ -98,33 +102,46 @@ export default function Login({ navigation }) {
             </View>
           </View>
 
-          <TouchableOpacity
-            className="p-4 rounded-2xl mt-6 w-full"
-            style={{ backgroundColor: "red" }}
-            onPress={async () => {
-              try {
-                const response = await login({
-                  variables: {
-                    email,
-                    password,
-                  },
-                });
-                await SecureStore.setItemAsync(
-                  "accessToken",
-                  response.data.login.access_token
-                );
-                // console.log(response.data.login);
+          {
+            isLoading ? ( // if loading is true
+              <View className="p-4 rounded-2xl mt-6 w-full "
+              >
+                <ActivityIndicator size="large" color={"#EFEDED"} />
+              </View>
+            ) : (
+              <TouchableOpacity
+                className="p-4 rounded-2xl mt-6 w-full"
+                style={{ backgroundColor: "red" }}
+                onPress={async () => {
+                  setIsLoading(true);
+                  try {
+                    const response = await login({
+                      variables: {
+                        email,
+                        password,
+                      },
+                    });
+                    await SecureStore.setItemAsync(
+                      "accessToken",
+                      response.data.login.access_token
+                    );
+                    // console.log(response.data.login);
 
-                setIsSignedIn(true);
-              } catch (error) {
-                console.log(error);
-              }
+                    setIsSignedIn(true);
+                  } catch (error) {
+                    console.log(error);
+                  } finally {
+                    setIsLoading(false);
+                  }
 
-              // navigation.navigate("HomeTab");
-            }}
-          >
-            <Text style={styles.loginText}>LOGIN</Text>
-          </TouchableOpacity>
+                  // navigation.navigate("HomeTab");
+                }}
+              >
+                <Text style={styles.loginText}>LOGIN</Text>
+              </TouchableOpacity>
+            ) // if loading is false
+          }
+
           <Text
             className="font-poppins-regular"
             style={{ color: "white", marginTop: 20 }}

@@ -10,6 +10,7 @@ import {
   ScrollView,
   FlatList,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import {
   SafeAreaView,
@@ -34,18 +35,21 @@ export default function Register({ navigation }) {
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const StyledView = styled(View);
   const [registerUser, { data, loading, error }] = useMutation(
     REGISTER_MUTATION,
     {
       onCompleted: () => {
         ToastSuccess();
+        setIsLoading(false);
         setTimeout(() => {
           navigation.navigate("Login");
         }, 1000);
       },
       onError: (error) => {
         ToastError(error.message);
+        setIsLoading(false);
       },
     }
   );
@@ -134,24 +138,31 @@ export default function Register({ navigation }) {
             </View>
           </View>
 
-          <TouchableOpacity
-            className="rounded-2xl p-4 mt-6 w-full text-white font-poppins-bold"
-            style={{ backgroundColor: "red" }}
-            onPress={() => {
-              registerUser({
-                variables: {
-                  newUser: {
-                    email: registerData.email,
-                    name: registerData.name,
-                    password: registerData.password,
-                    username: registerData.username,
+          {isLoading ? (
+            <View className="rounded-2xl p-4 mt-6 w-full ">
+              <ActivityIndicator size="large" color={"#D32F2F"} />
+            </View>
+          ) : (
+            <TouchableOpacity
+              className="rounded-2xl p-4 mt-6 w-full text-white font-poppins-bold"
+              style={{ backgroundColor: "red" }}
+              onPress={() => {
+                setIsLoading(true);
+                registerUser({
+                  variables: {
+                    newUser: {
+                      email: registerData.email,
+                      name: registerData.name,
+                      password: registerData.password,
+                      username: registerData.username,
+                    },
                   },
-                },
-              });
-            }}
-          >
-            <Text style={styles.loginText}>REGISTER</Text>
-          </TouchableOpacity>
+                });
+              }}
+            >
+              <Text style={styles.loginText}>REGISTER</Text>
+            </TouchableOpacity>
+          )}
 
           <TouchableOpacity
             onPress={() => {

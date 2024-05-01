@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -37,9 +37,14 @@ export default function Login({ navigation }) {
   const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION, {
     onError: (error) => {
       console.log(error.message);
-      Toast.error(error.message);
+      ToastError(error.message);
+      Alert.alert("Login Gagal", error.message);
     },
   });
+
+  const ToastError = (message) => {
+    Toast.error(message);
+  };
 
   const { setIsSignedIn } = useContext(AuthContext);
   return (
@@ -64,6 +69,7 @@ export default function Login({ navigation }) {
         </View>
 
         <ToastManager width={300} />
+        {/* <ToastManager width={300} /> */}
 
         <View
           id="login-card"
@@ -104,8 +110,7 @@ export default function Login({ navigation }) {
 
           {
             isLoading ? ( // if loading is true
-              <View className="p-4 rounded-2xl mt-6 w-full "
-              >
+              <View className="p-4 rounded-2xl mt-6 w-full ">
                 <ActivityIndicator size="large" color={"#EFEDED"} />
               </View>
             ) : (
@@ -129,7 +134,7 @@ export default function Login({ navigation }) {
 
                     setIsSignedIn(true);
                   } catch (error) {
-                    console.log(error);
+                    console.log(error, "<<<<<");
                   } finally {
                     setIsLoading(false);
                   }

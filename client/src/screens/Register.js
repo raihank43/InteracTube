@@ -80,7 +80,7 @@ export default function Register({ navigation }) {
           />
         </View>
 
-        <ToastManager width={300} />
+        <ToastManager width={325} />
 
         <View className="bg-white p-6 w-full rounded-t-3xl">
           <Text className="text-red-700 rounded self-start font-poppins-bold mb-6 text-xl">

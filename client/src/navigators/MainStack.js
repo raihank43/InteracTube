@@ -18,13 +18,15 @@ import Register from "../screens/Register";
 import HomeTab from "./HomeTab";
 import PostDetail from "../screens/PostDetail";
 
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import PeoplesProfile from "../screens/OthersProfile";
 
 import { AuthContext } from "../context/AuthContext";
 import SearchScreen from "../screens/SearchScreen";
 import SearchBarUser from "../components/SearchBarUser";
+import { HeaderButtons } from "react-navigation-header-buttons";
+import { FontAwesome } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
 export default function MainStack() {
@@ -38,7 +40,34 @@ export default function MainStack() {
         {isSignedIn ? (
           <>
             <Stack.Screen
-              options={{ headerShown: false }}
+              options={({ navigation }) => ({
+                headerStyle: {
+                  backgroundColor: "red",
+                  elevation: 0,
+                  shadowOpacity: 0,
+                  borderBottomWidth: 0,
+                },
+                headerTitle: () => (
+                  <View>
+                    <Text className="font-poppins-bold text-white text-3xl">
+                      InteracTube
+                    </Text>
+                  </View>
+                ),
+
+                headerRight: () => (
+                  <HeaderButtons>
+                    <FontAwesome
+                      name="search"
+                      size={24}
+                      color="black"
+                      onPress={() => {
+                        navigation.navigate("SearchUser");
+                      }}
+                    />
+                  </HeaderButtons>
+                ),
+              })}
               name="HomeTab"
               component={HomeTab}
             />

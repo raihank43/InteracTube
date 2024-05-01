@@ -48,7 +48,7 @@ export default function Login({ navigation }) {
         <View
           className="border-none items-center pt-10 bg-white w-full pb-10"
           style={{
-            borderBottomRightRadius: "120px",
+            borderBottomRightRadius: 120,
             boxShadow: "0 0 10px 0 rgba(255,255,255,0.2)",
           }}
         >

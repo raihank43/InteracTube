@@ -46,3 +46,6 @@ Beberapa screenshot untuk aplikasi ini
 <div align="center">
     <img src="assets/home.png" alt="Image Description">
 </div>
+<div align="center">
+    <img src="assets/home2.png" alt="Image Description">
+</div>

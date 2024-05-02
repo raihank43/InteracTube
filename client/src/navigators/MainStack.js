@@ -72,8 +72,8 @@ export default function MainStack() {
                       <HeaderButtons>
                         <MaterialIcons
                           name="logout"
-                          size={24}
-                          color="#B91C1C"
+                          size={26}
+                          color="red"
                           onPress={async () => {
                             await SecureStore.deleteItemAsync("accessToken");
                             await client.clearStore();

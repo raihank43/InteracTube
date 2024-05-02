@@ -86,7 +86,7 @@ export default function PostItem({ Post }) {
         <View style={styles.PostHeader}>
           <Image
             style={styles.ProfileImage}
-            src="https://th.bing.com/th/id/OIP.WBjdfpIWhgt8n8WkzhOpJwHaKX?rs=1&pid=ImgDetMain"
+            src={`https://api.dicebear.com/8.x/adventurer-neutral/png?seed=${Post.author.name}`}
           />
           <View style={{marginLeft:5}}>
             <Text style={styles.PostHeader.AuthorName}>

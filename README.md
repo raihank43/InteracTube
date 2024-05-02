@@ -49,3 +49,8 @@ Beberapa screenshot untuk aplikasi ini
 <div align="center">
     <img src="assets/home2.png" alt="Image Description">
 </div>
+
+## Liking Post
+<div align="center">
+    <img src="assets/likingPost.png" alt="Image Description">
+</div>

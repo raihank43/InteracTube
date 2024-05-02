@@ -14,6 +14,7 @@ import { GET_POSTS } from "../queries/GetPostQuery";
 import { GET_CURRENT_LOG_USER } from "../queries/GetUserProfile";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import timeSincePosted from "../utils/getTimeSincePosted";
+import LoadingPostComponent from "./LoadingPostComponent";
 
 export default function PostItem({ Post }) {
   const navigation = useNavigation();
@@ -28,15 +29,10 @@ export default function PostItem({ Post }) {
   if (loading) {
     return (
       <SafeAreaProvider>
-        <SafeAreaView
-          style={{
-            ...styles.container,
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-          }}
-        >
-          <ActivityIndicator size={"large"} />
+        <SafeAreaView>
+          <View className="justify-center items-center min-w-full w-full h-full mb-5">
+            <LoadingPostComponent />
+          </View>
         </SafeAreaView>
       </SafeAreaProvider>
     );
@@ -89,8 +85,13 @@ export default function PostItem({ Post }) {
             src={`https://api.dicebear.com/8.x/adventurer-neutral/png?seed=${Post.author.name}`}
           />
           <View className="ml-2  justify-between ">
-            <Text className="font-poppins-bold text-xl">{Post.author.name}</Text>
-            <Text className="font-poppins-regular" style={styles.PostHeader.Time}>
+            <Text className="font-poppins-bold text-xl">
+              {Post.author.name}
+            </Text>
+            <Text
+              className="font-poppins-regular"
+              style={styles.PostHeader.Time}
+            >
               {timeSincePosted(Post.createdAt)}
             </Text>
           </View>
@@ -140,19 +141,25 @@ export default function PostItem({ Post }) {
             {findLikes ? (
               <View style={styles.PostFooter.footerItem}>
                 <FontAwesome name="thumbs-up" size={24} color="red" />
-                <Text>{Post.likes.length} Likes</Text>
+                <Text className="font-poppins-bold" style={{ color: "red" }}>
+                  {Post.likes.length} Likes
+                </Text>
               </View>
             ) : (
               <View style={styles.PostFooter.footerItem}>
                 <FontAwesome name="thumbs-up" size={24} color="black" />
-                <Text>{Post.likes.length} Likes</Text>
+                <Text className="font-poppins-bold">
+                  {Post.likes.length} Likes
+                </Text>
               </View>
             )}
           </TouchableOpacity>
         </TouchableOpacity>
         <View style={styles.PostFooter.footerItem}>
           <FontAwesome name="comment" size={24} color="black" />
-          <Text>{Post.comments.length} Comments</Text>
+          <Text className="font-poppins-bold">
+            {Post.comments.length} Comments
+          </Text>
         </View>
       </View>
     </TouchableOpacity>

@@ -41,3 +41,8 @@ Beberapa screenshot untuk aplikasi ini
 <div align="center">
     <img src="assets/login.png" alt="Image Description">
 </div>
+
+## Home/Feed
+<div align="center">
+    <img src="assets/home.png" alt="Image Description">
+</div>

@@ -88,22 +88,29 @@ export default function PostItem({ Post }) {
             style={styles.ProfileImage}
             src={`https://api.dicebear.com/8.x/adventurer-neutral/png?seed=${Post.author.name}`}
           />
-          <View style={{marginLeft:5}}>
-            <Text style={styles.PostHeader.AuthorName}>
-              {Post.author.name}
+          <View className="ml-2  justify-between ">
+            <Text className="font-poppins-bold text-xl">{Post.author.name}</Text>
+            <Text className="font-poppins-regular" style={styles.PostHeader.Time}>
+              {timeSincePosted(Post.createdAt)}
             </Text>
-            <Text style={styles.PostHeader.Time}>{timeSincePosted(Post.createdAt)}</Text>
           </View>
         </View>
       </TouchableOpacity>
 
       <View style={styles.PostBody}>
-        {Post.imgUrl ? (
-          <Image style={styles.PostBody.Image} src={Post.imgUrl}></Image>
-        ) : (
-          ""
-        )}
-        <Text style={styles.PostContent}>{Post.content}</Text>
+        <View className="w-full max-h-96 mb-3 ">
+          {Post.imgUrl ? (
+            <Image
+              className="w-full h-full items-center rounded-lg"
+              src={Post.imgUrl}
+              resizeMode="cover"
+            ></Image>
+          ) : (
+            ""
+          )}
+        </View>
+
+        <Text className="text-base">{Post.content}</Text>
 
         <View style={styles.PostTags}>
           {Post.tags.map((el, index) => {
@@ -165,10 +172,10 @@ const styles = StyleSheet.create({
   },
   PostItem: {
     borderRadius: 10,
-    width: "100%",
+    minWidth: "100%",
     padding: 20,
     marginVertical: 8,
-    width: "100%",
+
     // marginHorizontal: 16,
     backgroundColor: "white",
   },
@@ -179,12 +186,13 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     AuthorName: {
       margin: 0,
-      fontWeight: "bold",
+      // fontWeight: "bold",
       fontSize: 24,
+      fontFamily: "Poppins-Bold",
     },
     Time: {
       color: "gray",
-    }
+    },
   },
 
   PostBody: {

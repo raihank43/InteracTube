@@ -9,7 +9,7 @@ import CreatePostScreen from "../screens/CreatePost";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Entypo } from "@expo/vector-icons";
 import Profile from "../screens/Profile";
 import { FontAwesome } from "@expo/vector-icons";
 import SearchScreen from "../screens/SearchScreen";
@@ -46,9 +46,7 @@ export default function HomeTab({ navigation }) {
         },
         tabBarIcon: (props) => {
           if (route.name == "Home") {
-            return (
-              <SimpleLineIcons name="feed" size={24} color={props.color} />
-            );
+            return <Entypo name="home" size={24} color={props.color} />;
           }
 
           if (route.name == "Settings") {

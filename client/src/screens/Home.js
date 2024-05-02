@@ -76,7 +76,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.HomeContainer}>
       {/* Posts */}
-      <StatusBar style="dark" />
+      <StatusBar style="inverted" />
 
       <FlatList
         refreshControl={

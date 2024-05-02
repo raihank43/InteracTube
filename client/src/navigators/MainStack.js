@@ -12,6 +12,8 @@ import {
   Button,
   Image,
 } from "react-native";
+import * as SecureStore from "expo-secure-store";
+import { useApolloClient } from "@apollo/client";
 
 import Login from "../screens/Login";
 import Register from "../screens/Register";
@@ -25,13 +27,14 @@ import PeoplesProfile from "../screens/OthersProfile";
 import { AuthContext } from "../context/AuthContext";
 import SearchScreen from "../screens/SearchScreen";
 import SearchBarUser from "../components/SearchBarUser";
-import { HeaderButtons } from "react-navigation-header-buttons";
-import { FontAwesome } from "@expo/vector-icons";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
 export default function MainStack() {
   //? ini ngambil state sign in saat ini dari context
   const { isSignedIn, setIsSignedIn } = useContext(AuthContext);
+  const client = useApolloClient();
 
   return (
     /* // Describe navigator type */
@@ -42,30 +45,45 @@ export default function MainStack() {
             <Stack.Screen
               options={({ navigation }) => ({
                 headerStyle: {
-                  backgroundColor: "red",
+                  backgroundColor: "#111827",
                   elevation: 0,
                   shadowOpacity: 0,
                   borderBottomWidth: 0,
+                  shadowColor: "transparent", // for Android
                 },
                 headerTitle: () => (
                   <View>
-                    <Text className="font-poppins-bold text-white text-3xl">
-                      InteracTube
-                    </Text>
+                    <Image
+                      className="w-32 h-5 "
+                      source={require("../assets/interacTubeTransparent.png")}
+                    ></Image>
                   </View>
                 ),
 
                 headerRight: () => (
-                  <HeaderButtons>
-                    <FontAwesome
-                      name="search"
-                      size={24}
-                      color="black"
-                      onPress={() => {
-                        navigation.navigate("SearchUser");
-                      }}
-                    />
-                  </HeaderButtons>
+                  <View className="flex-row gap-6">
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("SearchUser")}
+                    >
+                      <FontAwesome name="search" size={24} color="#B91C1C" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                      <HeaderButtons>
+                        <MaterialIcons
+                          name="logout"
+                          size={24}
+                          color="#B91C1C"
+                          onPress={async () => {
+                            await SecureStore.deleteItemAsync("accessToken");
+                            await client.clearStore();
+                            setIsSignedIn(false);
+                            navigation.navigate("Login");
+                          }}
+                        />
+                      </HeaderButtons>
+                    </TouchableOpacity>
+                  </View>
                 ),
               })}
               name="HomeTab"

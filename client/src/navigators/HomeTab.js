@@ -19,24 +19,35 @@ const Tab = createMaterialTopTabNavigator();
 export default function HomeTab({ navigation }) {
   return (
     <Tab.Navigator
+      gestureHandlerProps={{
+        springConfig: {
+          damping: 50,
+          mass: 1,
+          stiffness: 500,
+          overshootClamping: true,
+          restDisplacementThreshold: 0.01,
+          restSpeedThreshold: 0.01,
+        },
+        timingConfig: { duration: 500 },
+      }}
       screenOptions={({ route }) => ({
         lazy: true,
-        tabBarActiveTintColor: "white",
+        tabBarActiveTintColor: "red",
         tabBarInactiveTintColor: "white",
-        tabBarShowLabel: true,
+        tabBarShowLabel: false,
+        tabBarIndicatorStyle: {
+          backgroundColor: "red",
+          height: 3,
+        },
         tabBarStyle: {
-          backgroundColor: "black",
+          backgroundColor: "#111827",
           height: 60,
           justifyContent: "center",
         },
         tabBarIcon: (props) => {
           if (route.name == "Home") {
             return (
-              <SimpleLineIcons
-                name="feed"
-                size={props.size}
-                color={props.color}
-              />
+              <SimpleLineIcons name="feed" size={24} color={props.color} />
             );
           }
 
@@ -44,7 +55,7 @@ export default function HomeTab({ navigation }) {
             return (
               <MaterialIcons
                 name="settings-applications"
-                size={props.size}
+                size={24}
                 color={props.color}
               />
             );
@@ -52,31 +63,19 @@ export default function HomeTab({ navigation }) {
 
           if (route.name == "Logout") {
             return (
-              <MaterialIcons
-                name="logout"
-                size={props.size}
-                color={props.color}
-              />
+              <MaterialIcons name="logout" size={24} color={props.color} />
             );
           }
 
           if (route.name == "CreatePost") {
             return (
-              <MaterialIcons
-                name="create"
-                size={props.size}
-                color={props.color}
-              />
+              <MaterialIcons name="create" size={24} color={props.color} />
             );
           }
 
           if (route.name == "Profile") {
             return (
-              <Ionicons
-                name="person-circle"
-                size={props.size}
-                color={props.color}
-              />
+              <Ionicons name="person-circle" size={26} color={props.color} />
             );
           }
         },
@@ -90,7 +89,7 @@ export default function HomeTab({ navigation }) {
       />
       <Tab.Screen name="Profile" component={Profile} />
 
-      <Tab.Screen name="Logout" component={LogoutScreen} />
+      {/* <Tab.Screen name="Logout" component={LogoutScreen} /> */}
     </Tab.Navigator>
   );
 }

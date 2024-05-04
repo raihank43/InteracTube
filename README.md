@@ -34,28 +34,28 @@ Beberapa screenshot untuk aplikasi ini
 
 ## Register
 <div align="center">
-    <img src="assets/register.png" alt="Image Description">
+    <img src="assets/register.png" alt="Image Description" width="500">
 </div>
 
 ## Login
 <div align="center">
-    <img src="assets/login.png" alt="Image Description">
+    <img src="assets/login.png" alt="Image Description" width="500">
 </div>
 
 ## Home/Feed
 <div align="center">
-    <img src="assets/home.png" alt="Image Description">
+    <img src="assets/home.png" alt="Image Description" width="500">
 </div>
 <div align="center">
-    <img src="assets/home2.png" alt="Image Description">
+    <img src="assets/home2.png" alt="Image Description" width="500">
 </div>
 
 ## Liking Post
 <div align="center">
-    <img src="assets/likingPost.png" alt="Image Description">
+    <img src="assets/likingPost.png" alt="Image Description" width="500">
 </div>
 
 ## Create a new Post
-<div align="center">
-    <img src="assets/createPost.png" alt="Image Description">
+<div align="center" >
+    <img src="assets/createPost.png" alt="Image Description" width="500">
 </div>

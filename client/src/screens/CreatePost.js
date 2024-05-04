@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  ScrollView,
 } from "react-native";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { GET_POSTS } from "../queries/GetPostQuery";
@@ -38,30 +39,31 @@ export default function CreatePostScreen({ navigation }) {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="bg-white flex-1"
-      // style={styles.container}
-    >
+    <ScrollView contentContainerStyle={styles.container}>
+      <View className="bg-gray-900 items-center p-6 rounded-b-2xl">
+        <Text className=" font-poppins-bold text-3xl text-red-600">
+          Create a New Post
+        </Text>
+      </View>
       <View className="flex-row items-center gap-2 p-6">
         <Image
           className="w-10 h-10 rounded-full"
           src={`https://api.dicebear.com/8.x/adventurer-neutral/png?seed=${findCurrentLogUser.name}`}
         ></Image>
-        <View>
+        <View className="justify-center">
           <Text className="font-poppins-bold text-2xl">
             {findCurrentLogUser.name}
           </Text>
-          <Text className=" font-poppins-bold text-3xl">Create new Post</Text>
+          <Text className=" font-poppins-regular text-gray-500">just now</Text>
         </View>
       </View>
       <View className="flex-1">
         <TextInput
           placeholder="What's happening?"
-          className=" bg-white border border-black"
+          className="px-5 pt-5 bg-white text-3xl font-poppins-regular "
           // style={styles.textInputContent}
           value={content}
-          // multiline={true}
+          multiline={true}
           // numberOfLines={4}
           onChangeText={setContent}
         />
@@ -95,14 +97,14 @@ export default function CreatePostScreen({ navigation }) {
       >
         <Text style={styles.submitText}>SUBMIT</Text>
       </TouchableOpacity>
-    </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#262626ff",
+    minHeight: "100%",
+    backgroundColor: "white",
   },
   title: {
     fontWeight: "bold",

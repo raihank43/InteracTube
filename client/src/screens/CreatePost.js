@@ -7,15 +7,18 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Image,
+  ScrollView,
 } from "react-native";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { GET_POSTS } from "../queries/GetPostQuery";
 import { ADD_POST } from "../mutations/AddPostMutation";
+import { GET_CURRENT_LOG_USER } from "../queries/GetUserProfile";
 
 export default function CreatePostScreen({ navigation }) {
   const [content, setContent] = useState("");
   const [imgUrl, setImgUrl] = useState("");
-  const [tags, setTags] = useState("")
+  const [tags, setTags] = useState("");
 
   const [addPost, { data, loading, error }] = useMutation(ADD_POST, {
     refetchQueries: [GET_POSTS],
@@ -25,20 +28,47 @@ export default function CreatePostScreen({ navigation }) {
     },
   });
 
+  const {
+    data: { findCurrentLogUser },
+    loading: logLoading,
+    error: logError,
+  } = useQuery(GET_CURRENT_LOG_USER);
+
+  if (logLoading) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
-      <Text style={styles.title}>Create new Post</Text>
-      <TextInput
-        placeholder="What's happening?"
-        style={styles.textInputContent}
-        value={content}
-        multiline
-        numberOfLines={4}
-        onChangeText={setContent}
-      />
+    <ScrollView contentContainerStyle={styles.container}>
+      <View className="bg-gray-900 items-center p-6 rounded-b-2xl">
+        <Text className=" font-poppins-bold text-3xl text-red-600">
+          Create a New Post
+        </Text>
+      </View>
+      <View className="flex-row items-center gap-2 p-6">
+        <Image
+          className="w-10 h-10 rounded-full"
+          src={`https://api.dicebear.com/8.x/adventurer-neutral/png?seed=${findCurrentLogUser.name}`}
+        ></Image>
+        <View className="justify-center">
+          <Text className="font-poppins-bold text-2xl">
+            {findCurrentLogUser.name}
+          </Text>
+          <Text className=" font-poppins-regular text-gray-500">just now</Text>
+        </View>
+      </View>
+      <View className="flex-1">
+        <TextInput
+          placeholder="What's happening?"
+          className="px-5 pt-5 bg-white text-3xl font-poppins-regular "
+          // style={styles.textInputContent}
+          value={content}
+          multiline={true}
+          // numberOfLines={4}
+          onChangeText={setContent}
+        />
+      </View>
+
       <TextInput
         placeholder="Put some Tags"
         style={styles.textInputUrl}
@@ -67,14 +97,14 @@ export default function CreatePostScreen({ navigation }) {
       >
         <Text style={styles.submitText}>SUBMIT</Text>
       </TouchableOpacity>
-    </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#262626ff",
+    minHeight: "100%",
+    backgroundColor: "white",
   },
   title: {
     fontWeight: "bold",
@@ -101,7 +131,7 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: "center",
     alignItems: "center",
-    height: 50
+    height: 50,
   },
   submitText: {
     color: "white",

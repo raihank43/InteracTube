@@ -54,3 +54,8 @@ Beberapa screenshot untuk aplikasi ini
 <div align="center">
     <img src="assets/likingPost.png" alt="Image Description">
 </div>
+
+## Create a new Post
+<div align="center">
+    <img src="assets/createPost.png" alt="Image Description">
+</div>

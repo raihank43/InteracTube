@@ -7,6 +7,8 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  Modal,
+  TouchableHighlight,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LIKE_POST } from "../mutations/LikePostMutation";
@@ -15,14 +17,17 @@ import { GET_CURRENT_LOG_USER } from "../queries/GetUserProfile";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import timeSincePosted from "../utils/getTimeSincePosted";
 import LoadingPostComponent from "./LoadingPostComponent";
+import React, { useState } from "react";
 
-export default function PostItem({ Post }) {
+
+function PostItem({ Post }) {
   const navigation = useNavigation();
   const [addLike] = useMutation(LIKE_POST, {
     refetchQueries: {
       GET_POSTS,
     },
   });
+  const [modalVisible, setModalVisible] = useState(false);
 
   const { data, loading, error } = useQuery(GET_CURRENT_LOG_USER);
 
@@ -66,103 +71,153 @@ export default function PostItem({ Post }) {
     (obj) => obj.username.toString() === currentLogUsername
   );
   return (
-    <TouchableOpacity
-      style={styles.PostItem}
-      onPress={() => {
-        navigation.push("PostDetail", {
-          _id: Post._id,
-        });
-      }}
-    >
+    <>
+      <Modal
+        animationType="slide"
+        // transparent={true}
+        visible={modalVisible}
+        presentationStyle="overFullScreen"
+        onRequestClose={() => {
+          // Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View
+          style={{
+            marginTop: 50,
+            backgroundColor: "white",
+            padding: 20,
+            borderRadius: 10,
+          }}
+        >
+          <Text>Hello World!</Text>
+
+          <TouchableHighlight
+            style={{
+              backgroundColor: "blue",
+              padding: 10,
+              marginTop: 20,
+              borderRadius: 5,
+            }}
+            onPress={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <Text style={{ color: "white" }}>Hide Modal</Text>
+          </TouchableHighlight>
+        </View>
+      </Modal>
       <TouchableOpacity
+        style={styles.PostItem}
+        onPress={() => {
+          console.log("Post._id", Post._id, "pressed");
+          navigation.push("PostDetail", {
+            _id: Post._id,
+          });
+        }}
+        onLongPress={() => {
+          setModalVisible(true);
+        }}
+        // delayLongPress={1000}
+        // hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+      >
+        <TouchableOpacity
         onPress={() => {
           navigation.navigate("PeoplesProfile", { authorId: Post.authorId });
         }}
-      >
-        <View style={styles.PostHeader}>
-          <Image
-            style={styles.ProfileImage}
-            src={`https://api.dicebear.com/8.x/adventurer-neutral/png?seed=${Post.author.name}`}
-          />
-          <View className="ml-2  justify-between ">
-            <Text className="font-poppins-bold text-xl">
-              {Post.author.name}
-            </Text>
-            <Text
-              className="font-poppins-regular"
-              style={styles.PostHeader.Time}
-            >
-              {timeSincePosted(Post.createdAt)}
-            </Text>
+        >
+          <View className="flex-row items-center mb-6 w-full">
+            <Image
+              style={styles.ProfileImage}
+              src={`https://api.dicebear.com/8.x/adventurer-neutral/png?seed=${Post.author.name}`}
+            />
+            <View className="ml-2  justify-between ">
+              <Text className="font-poppins-bold text-xl">
+                {Post.author.name}
+              </Text>
+              <Text
+                className="font-poppins-regular"
+                style={styles.PostHeader.Time}
+              >
+                {timeSincePosted(Post.createdAt)}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+
+        <View style={styles.PostBody}>
+          <View className="w-full max-h-96 mb-3 ">
+            {Post.imgUrl ? (
+              <Image
+                className="w-full h-full items-center rounded-lg"
+                src={Post.imgUrl}
+                resizeMode="cover"
+              ></Image>
+            ) : (
+              ""
+            )}
+          </View>
+
+          <Text className="text-base">{Post.content}</Text>
+
+          <View style={styles.PostTags}>
+            {Post.tags.map((el, index) => {
+              return (
+                <View style={styles.PostTags.PerTags} key={index}>
+                  <FontAwesome name="tags" size={20} color="red" />
+                  <Text style={styles.PostTags.PostTagsText}>{el}</Text>
+                </View>
+              );
+            })}
           </View>
         </View>
-      </TouchableOpacity>
 
-      <View style={styles.PostBody}>
-        <View className="w-full max-h-96 mb-3 ">
-          {Post.imgUrl ? (
-            <Image
-              className="w-full h-full items-center rounded-lg"
-              src={Post.imgUrl}
-              resizeMode="cover"
-            ></Image>
-          ) : (
-            ""
-          )}
-        </View>
-
-        <Text className="text-base">{Post.content}</Text>
-
-        <View style={styles.PostTags}>
-          {Post.tags.map((el, index) => {
-            return (
-              <View style={styles.PostTags.PerTags} key={index}>
-                <FontAwesome name="tags" size={20} color="red" />
-                <Text style={styles.PostTags.PostTagsText}>{el}</Text>
-              </View>
-            );
-          })}
-        </View>
-      </View>
-
-      <View style={styles.PostFooter}>
-        <TouchableOpacity>
+        <View style={styles.PostFooter}>
+          <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                addLike({
+                  variables: {
+                    newLike: {
+                      postId: Post._id,
+                    },
+                  },
+                });
+              }}
+            >
+              {findLikes ? (
+                <View style={styles.PostFooter.footerItem}>
+                  <FontAwesome name="thumbs-up" size={24} color="red" />
+                  <Text className="font-poppins-bold" style={{ color: "red" }}>
+                    {Post.likes.length} Likes
+                  </Text>
+                </View>
+              ) : (
+                <View style={styles.PostFooter.footerItem}>
+                  <FontAwesome name="thumbs-up" size={24} color="black" />
+                  <Text className="font-poppins-bold">
+                    {Post.likes.length} Likes
+                  </Text>
+                </View>
+              )}
+            </TouchableOpacity>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              addLike({
-                variables: {
-                  newLike: {
-                    postId: Post._id,
-                  },
-                },
+              navigation.push("PostDetail", {
+                _id: Post._id,
               });
             }}
+            style={styles.PostFooter.footerItem}
           >
-            {findLikes ? (
-              <View style={styles.PostFooter.footerItem}>
-                <FontAwesome name="thumbs-up" size={24} color="red" />
-                <Text className="font-poppins-bold" style={{ color: "red" }}>
-                  {Post.likes.length} Likes
-                </Text>
-              </View>
-            ) : (
-              <View style={styles.PostFooter.footerItem}>
-                <FontAwesome name="thumbs-up" size={24} color="black" />
-                <Text className="font-poppins-bold">
-                  {Post.likes.length} Likes
-                </Text>
-              </View>
-            )}
+            <FontAwesome name="comment" size={24} color="black" />
+            <Text className="font-poppins-bold">
+              {Post.comments.length} Comments
+            </Text>
           </TouchableOpacity>
-        </TouchableOpacity>
-        <View style={styles.PostFooter.footerItem}>
-          <FontAwesome name="comment" size={24} color="black" />
-          <Text className="font-poppins-bold">
-            {Post.comments.length} Comments
-          </Text>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </>
   );
 }
 
@@ -191,6 +246,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 15,
+    backgroundColor: "black",
+    width: "fit-content",
     AuthorName: {
       margin: 0,
       // fontWeight: "bold",
@@ -251,3 +308,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+export default React.memo(PostItem);

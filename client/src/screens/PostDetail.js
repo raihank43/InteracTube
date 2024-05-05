@@ -100,7 +100,7 @@ export default function PostDetail({ navigation, route }) {
             </TouchableOpacity>
             <View style={styles.comments}>
               <FlatList
-                nestedScrollEnabled
+                // nestedScrollEnabled
                 data={data.findPostById.comments}
                 renderItem={({ item }) => <PostComment PostComment={item} />}
                 keyExtractor={(item) => item._id}

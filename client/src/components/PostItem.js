@@ -18,7 +18,10 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import timeSincePosted from "../utils/getTimeSincePosted";
 import LoadingPostComponent from "./LoadingPostComponent";
 import React, { useState } from "react";
+import tw from "tailwind-react-native-classnames";
 
+import Feather from "@expo/vector-icons/Feather";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 function PostItem({ Post }) {
   const navigation = useNavigation();
@@ -74,37 +77,58 @@ function PostItem({ Post }) {
     <>
       <Modal
         animationType="slide"
-        // transparent={true}
+        transparent={true}
         visible={modalVisible}
-        presentationStyle="overFullScreen"
+        // presentationStyle="pageSheet"
         onRequestClose={() => {
           // Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}
       >
-        <View
-          style={{
-            marginTop: 50,
-            backgroundColor: "white",
-            padding: 20,
-            borderRadius: 10,
-          }}
-        >
-          <Text>Hello World!</Text>
-
-          <TouchableHighlight
-            style={{
-              backgroundColor: "blue",
-              padding: 10,
-              marginTop: 20,
-              borderRadius: 5,
-            }}
-            onPress={() => {
-              setModalVisible(!modalVisible);
-            }}
+        <View style={tw`flex-1 justify-center bg-black bg-opacity-50`}>
+          <TouchableOpacity
+            className=" h-80"
+            onPress={() => setModalVisible(false)}
           >
-            <Text style={{ color: "white" }}>Hide Modal</Text>
-          </TouchableHighlight>
+            <View></View>
+          </TouchableOpacity>
+          <View
+            style={tw`bg-white p-4 bg-gray-100 flex-grow rounded-2xl shadow-2xl `}
+          >
+            <TouchableHighlight
+              onPress={() => setModalVisible(false)}
+              className="bg-gray-500 rounded-lg self-center w-36 h-2"
+            >
+              <View></View>
+            </TouchableHighlight>
+
+            <View className=" mt-3 bg-white rounded-lg pt-3">
+              <TouchableHighlight
+                className="p-3"
+                underlayColor={"#E5E7EB"}
+                onPress={() => console.log("Edit Post")}
+              >
+                <View className="flex-row gap-2 items-center">
+                  <Feather name="edit" size={30} color="red" />
+                  <Text className="font-poppins-bold text-gray-900 text-lg">
+                    Edit Post
+                  </Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight
+                className="p-3"
+                underlayColor={"#E5E7EB"}
+                onPress={() => console.log("Delete Post")}
+              >
+                <View className="flex-row gap-2 items-center ">
+                  <MaterialCommunityIcons name="delete" size={30} color="red" />
+                  <Text className="font-poppins-bold text-gray-900 text-lg">
+                    Delete Post
+                  </Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
         </View>
       </Modal>
       <TouchableOpacity
@@ -122,9 +146,9 @@ function PostItem({ Post }) {
         // hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       >
         <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("PeoplesProfile", { authorId: Post.authorId });
-        }}
+          onPress={() => {
+            navigation.navigate("PeoplesProfile", { authorId: Post.authorId });
+          }}
         >
           <View className="flex-row items-center mb-6 w-full">
             <Image

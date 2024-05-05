@@ -20,6 +20,7 @@ import MainStack from "./src/navigators/MainStack";
 import { ApolloProvider } from "@apollo/client";
 import client from "./src/config/apolloClient";
 import { SearchUserContext } from "./src/context/SearchUserContext";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App() {
   //? ini ngirim state sign in saat ini ke context
@@ -66,8 +67,10 @@ export default function App() {
       <SearchUserContext.Provider value={{ searchText, setSearchText }}>
         {/* /* Apollo provider in client */}
         <ApolloProvider client={client}>
-          {/* Stacks */}
-          <MainStack />
+          <GestureHandlerRootView>
+            {/* Stacks */}
+            <MainStack />
+          </GestureHandlerRootView>
         </ApolloProvider>
       </SearchUserContext.Provider>
     </AuthContext.Provider>

@@ -17,6 +17,11 @@ import { useMutation, useQuery } from "@apollo/client";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import PostComment from "../components/PostComments";
 import { CREATE_COMMENT } from "../mutations/CreateCommentMutation";
+import { StatusBar } from "expo-status-bar";
+import timeSincePosted from "../utils/getTimeSincePosted";
+import { LIKE_POST } from "../mutations/LikePostMutation";
+import { GET_CURRENT_LOG_USER } from "../queries/GetUserProfile";
+import tw from "tailwind-react-native-classnames";
 
 export default function PostDetail({ navigation, route }) {
   const { _id } = route.params;
@@ -25,7 +30,15 @@ export default function PostDetail({ navigation, route }) {
       _id: _id,
     },
   });
+  const {
+    loading: loading1,
+    error: error1,
+    data: { findCurrentLogUser },
+  } = useQuery(GET_CURRENT_LOG_USER);
   const [addComment] = useMutation(CREATE_COMMENT, {
+    refetchQueries: [GET_POST_BY_ID],
+  });
+  const [addLike] = useMutation(LIKE_POST, {
     refetchQueries: [GET_POST_BY_ID],
   });
 
@@ -33,7 +46,7 @@ export default function PostDetail({ navigation, route }) {
 
   // console.log(comment)
 
-  if (loading) {
+  if (loading || loading1) {
     return (
       <SafeAreaProvider>
         <SafeAreaView
@@ -50,7 +63,7 @@ export default function PostDetail({ navigation, route }) {
     );
   }
 
-  if (error) {
+  if (error || error1) {
     console.log(error);
     return (
       <SafeAreaProvider>
@@ -70,55 +83,124 @@ export default function PostDetail({ navigation, route }) {
     );
   }
 
+  const listPostLikes = data.findPostById.likes;
+  const currentLogUsername = findCurrentLogUser.username;
+
+  const findLikes = listPostLikes.find(
+    (obj) => obj.username.toString() === currentLogUsername
+  );
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <View style={styles.PostProfile}>
-            <Image
-              style={styles.ProfileImage}
-              source={{
-                uri: "https://th.bing.com/th/id/OIP.WBjdfpIWhgt8n8WkzhOpJwHaKX?rs=1&pid=ImgDetMain",
-              }}
-            />
-            <Text style={styles.author}>{data.findPostById.author.name}</Text>
-          </View>
-          {data.findPostById.imgUrl ? (
-            <Image
-              style={styles.image}
-              source={{ uri: data.findPostById.imgUrl }}
-            />
-          ) : null}
+        <StatusBar style="black" />
 
-          <Text style={styles.content}>{data.findPostById.content}</Text>
-          <View style={styles.footer}>
-            <TouchableOpacity style={styles.likeButton}>
-              <FontAwesome name="thumbs-up" size={24} color="red" />
-              <Text style={styles.likeCount}>
-                {data.findPostById.likes.length}
-              </Text>
-            </TouchableOpacity>
-            <View style={styles.comments}>
-              <FlatList
-                // nestedScrollEnabled
-                data={data.findPostById.comments}
-                renderItem={({ item }) => <PostComment PostComment={item} />}
-                keyExtractor={(item) => item._id}
-                key={item => item._id}
-              />
-            </View>
-          </View>
-        </ScrollView>
-        <View style={styles.commentBox}>
+        <View className="mb-16">
+          <FlatList
+            // nestedScrollEnabled
+            data={data.findPostById.comments}
+            renderItem={({ item }) => <PostComment PostComment={item} />}
+            ListEmptyComponent={
+              <View className="items-center justify-center">
+                <Text className="text-white font-poppins-bold">
+                  There is no comment yet.
+                </Text>
+              </View>
+            }
+            keyExtractor={(item) => item._id}
+            ListHeaderComponent={
+              <>
+                <View className="bg-white mb-6 rounded-b-lg">
+                  <View className="p-4 flex-row items-center mb-2">
+                    <Image
+                      style={styles.ProfileImage}
+                      source={{
+                        uri: `https://api.dicebear.com/8.x/adventurer-neutral/png?seed=${data.findPostById.author.name}`,
+                      }}
+                    />
+                    <View className="ml-3">
+                      <Text className="text-black font-poppins-bold text-2xl">
+                        {data.findPostById.author.name}
+                      </Text>
+                      <Text className="text-gray-500">
+                        {" "}
+                        {timeSincePosted(data.findPostById.createdAt)}
+                      </Text>
+                    </View>
+                  </View>
+                  <View className="pl-4 pb-2">
+                    <Text className="text-lg">{data.findPostById.content}</Text>
+                  </View>
+                  {data.findPostById.imgUrl ? (
+                    <View className="w-full max-h-96">
+                      <Image
+                        className=" w-full h-full items-center"
+                        // style={styles.image}
+                        source={{ uri: data.findPostById.imgUrl }}
+                      />
+                    </View>
+                  ) : null}
+
+                  <View style={tw`bg-white p-6 rounded-b-lg flex-row justify-around`}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        addLike({
+                          variables: {
+                            newLike: {
+                              postId: _id,
+                            },
+                          },
+                        });
+                      }}
+                    >
+                      {findLikes ? (
+                        <View className="flex-row gap-3">
+                          <FontAwesome name="thumbs-up" size={24} color="red" />
+                          <Text
+                            className="font-poppins-bold"
+                            style={{ color: "red" }}
+                          >
+                            {listPostLikes.length} Likes
+                          </Text>
+                        </View>
+                      ) : (
+                        <View className="flex-row gap-3">
+                          <FontAwesome
+                            name="thumbs-up"
+                            size={24}
+                            color="black"
+                          />
+                          <Text className="font-poppins-bold">
+                            {listPostLikes.length} Likes
+                          </Text>
+                        </View>
+                      )}
+                    </TouchableOpacity>
+
+                    <View className="flex-row gap-2 justify-center items-center">
+                      <FontAwesome name="comment" size={24} color="black" />
+                      <Text className="font-poppins-bold">
+                        {data.findPostById.comments.length} Comments
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </>
+            }
+          />
+        </View>
+
+        <View className="flex-row items-center bg-transparent p-2 absolute left-0 right-0 bottom-0">
           <TextInput
-            style={styles.input}
+          className="flex-1  bg-white rounded-2xl p-2 mr-2"
+            // style={styles.input}
             value={comment}
             onChangeText={setComment}
             placeholder="Add a comment..."
             placeholderTextColor="#888"
           />
           <TouchableOpacity
-            style={styles.sendButton}
+          className="bg-red-600 p-2 rounded-full"
             onPress={() => {
               addComment({
                 variables: {
@@ -130,7 +212,7 @@ export default function PostDetail({ navigation, route }) {
               });
             }}
           >
-            <MaterialIcons name="send" size={24} color="red" />
+            <MaterialIcons name="send" size={24} color="white" />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -142,7 +224,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#262626ff",
-    padding: 10,
   },
   PostProfile: {
     flexDirection: "row",

@@ -90,6 +90,7 @@ export default function PostDetail({ navigation, route }) {
     (obj) => obj.username.toString() === currentLogUsername
   );
 
+  console.log(data.findPostById.comments,"<<<<<")
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>

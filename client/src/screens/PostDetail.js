@@ -89,8 +89,6 @@ export default function PostDetail({ navigation, route }) {
   const findLikes = listPostLikes.find(
     (obj) => obj.username.toString() === currentLogUsername
   );
-
-  console.log(data.findPostById.comments,"<<<<<")
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -102,7 +100,7 @@ export default function PostDetail({ navigation, route }) {
             data={data.findPostById.comments}
             renderItem={({ item }) => <PostComment PostComment={item} />}
             ListEmptyComponent={
-              <View className="items-center justify-center">
+              <View className="items-center justify-center  h-36">
                 <Text className="text-white font-poppins-bold">
                   There is no comment yet.
                 </Text>
@@ -111,7 +109,7 @@ export default function PostDetail({ navigation, route }) {
             keyExtractor={(item) => item._id}
             ListHeaderComponent={
               <>
-                <View className="bg-white mb-6 rounded-b-lg">
+                <View className="bg-white rounded-b-lg">
                   <View className="p-4 flex-row items-center mb-2">
                     <Image
                       style={styles.ProfileImage}
@@ -193,7 +191,7 @@ export default function PostDetail({ navigation, route }) {
 
         <View className="flex-row items-center bg-transparent p-2 absolute left-0 right-0 bottom-0">
           <TextInput
-          className="flex-1  bg-white rounded-2xl p-2 mr-2"
+          className="flex-1 bg-white rounded-2xl p-2 mr-2"
             // style={styles.input}
             value={comment}
             onChangeText={setComment}

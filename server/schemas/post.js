@@ -21,6 +21,7 @@ type Author {
 type Comment {
     content: String
     username: String
+    createdAt: String
 }
 
 type Like {

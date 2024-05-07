@@ -59,3 +59,9 @@ Beberapa screenshot untuk aplikasi ini
 <div align="center" >
     <img src="assets/createPost.png" alt="Image Description" width="500">
 </div>
+
+
+## Post Detail and Comment
+<div align="center" >
+    <img src="assets/postdetail.png" alt="Image Description" width="500">
+</div>

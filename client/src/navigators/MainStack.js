@@ -89,7 +89,11 @@ export default function MainStack() {
               name="HomeTab"
               component={HomeTab}
             />
-            <Stack.Screen name="PostDetail" component={PostDetail} />
+            <Stack.Screen
+              name="PostDetail"
+              options={{ headerTitleAlign: "center" }}
+              component={PostDetail}
+            />
             <Stack.Screen name="PeoplesProfile" component={PeoplesProfile} />
             <Stack.Screen
               name="SearchUser"

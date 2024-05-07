@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -89,6 +89,10 @@ export default function PostDetail({ navigation, route }) {
   const findLikes = listPostLikes.find(
     (obj) => obj.username.toString() === currentLogUsername
   );
+  navigation.setOptions({
+    title: `${data.findPostById.author.name}'s post`,
+  });
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -140,7 +144,9 @@ export default function PostDetail({ navigation, route }) {
                     </View>
                   ) : null}
 
-                  <View style={tw`bg-white p-6 rounded-b-lg flex-row justify-around`}>
+                  <View
+                    style={tw`bg-white p-6 rounded-b-lg flex-row justify-around`}
+                  >
                     <TouchableOpacity
                       onPress={() => {
                         addLike({
@@ -191,7 +197,7 @@ export default function PostDetail({ navigation, route }) {
 
         <View className="flex-row items-center bg-transparent p-2 absolute left-0 right-0 bottom-0">
           <TextInput
-          className="flex-1 bg-white rounded-2xl p-2 mr-2"
+            className="flex-1 bg-white rounded-2xl p-2 mr-2"
             // style={styles.input}
             value={comment}
             onChangeText={setComment}
@@ -199,7 +205,7 @@ export default function PostDetail({ navigation, route }) {
             placeholderTextColor="#888"
           />
           <TouchableOpacity
-          className="bg-red-600 p-2 rounded-full"
+            className="bg-red-600 p-2 rounded-full"
             onPress={() => {
               addComment({
                 variables: {

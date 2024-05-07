@@ -1,10 +1,12 @@
 export default function timeSincePosted(createdAt) {
   // const now = new Date();
+  // console.log("createdAt", createdAt)
+  if (typeof createdAt === "string") createdAt = new Date(createdAt);
+ 
   const timeNumber = new Date(createdAt).getTime(); // konversi ke milidetik
   const diff = Date.now() - timeNumber; // selisih dalam milidetik
   const seconds = Math.floor(diff / 1000); // konversi ke detik
- 
-
+  // console.log("createdAt", createdAt)
   const units = [
     ["years", 60 * 60 * 24 * 365],
     ["months", 60 * 60 * 24 * 30],
